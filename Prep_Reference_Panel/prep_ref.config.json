@@ -1,0 +1,12 @@
+{
+	"vcf_1000g_path": "/your_path_to_1000_genomes_vcfs_here/",
+	
+	"pop_list_1000g": "1000genomes_selected_individuals_noAdmix_ind.txt",
+	
+	"chromosome": [
+	"1", "2", "3", "4", "5", "6", 
+	"7", "8", "9", "10", "11", "12", 
+	"13", "14", "15", "16", "17", "18", 
+	"19", "20", "21", "22"
+	]
+}

@@ -1,0 +1,30 @@
+# Snakefile to prepare the reference panel for input into popInf
+import os
+
+configfile: "prep_ref.config.json"
+
+
+rule all:
+	input:
+		expand("1000genomes/chr{chrm}_10000genomes_selected_individuals.vcf", chrm=chromosome)
+
+
+rule subset_1000genomes:
+    input:
+        gzvcf = os.path.join(config["vcf_1000g_path"], "ALL.chr{chrm}.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz"),
+        inds = config["pop_list_1000g"]
+    output:
+        temp("1000genomes/chr{chrm}_10000genomes_selected_individuals.recode.vcf")
+    shell:
+        "vcftools --gzvcf {input.gzvcf} --keep {input.inds} --recode -c > {output}"
+
+
+rule zip:
+	input:
+		"1000genomes/chr{chrm}_10000genomes_selected_individuals.vcf"
+	output:
+		"1000genomes/chr{chrm}_10000genomes_selected_individuals.vcf.gz"
+	shell: """
+		bgzip {input};
+		tabix -p vcf {output}
+	"""
