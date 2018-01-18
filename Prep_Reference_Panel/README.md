@@ -1,11 +1,11 @@
 # Prepare Referece Panel 
-This document will guide you through preparing your reference panel VCF (variant call format) files for input into PopInf. In this tutorial, we will use a subset of the 1000 Genomes Release 3 whole genome sequence data. However, PopInf can take any VCF files with individuals from any population. If you would like to use different populations in your reference panel, you can do so. Just follow these steps and replace the VCF files we use with your VCF.
+This document will guide you through preparing your reference panel VCF (variant call format) files for input into PopInf. In this tutorial, we will use a subset of the 1000 Genomes Release 3 whole genome sequence data. However, PopInf can take any VCF files with individuals from any population. If you would like to use different populations in your reference panel, you can do so. If you are making your own reference panel, you do not need to follow this directory. Just make sure your vcf files are separated by chromosome. 
 
 ## What you need to prepare the reference panel 
 You will need the following to prepare the reference panel:
 1. High performance computer (the reference file will likely be very large if you are analyzing sites across the entire genome).
 2. VCF files of the reference populations separated by chromosome.
-3. 1000 genomes sample list (only if you are using the 1000 genomes samples we use in this tutorial. We provide that list in this folder).
+3. 1000 genomes sample list (We provide the list in this folder).
 
 ## Step 1: Set up your enviroment 
 This tutorial will use a variety of programs. We will set up a conda environment to manage all necessary packages and programs. 
@@ -41,4 +41,25 @@ NOTE: These files are very large and will take quite a bit of time to download. 
 There is a snakefile in this folder with the commands to prepare the reference panel for input into popInf.
 
 ### Edit configuration file
-Associated with the `snakefile` is a configuration file in json format. This file has all important informaiton to run the snakefile.
+Associated with the `snakefile` is a configuration file in json format. This file has 3 pieces of informaiton neede to run the snakefile.
+The config file is named `prep_ref.config.json` and is located in this folder. \
+`prep_ref.config.json`:
+
+```
+{
+	"vcf_1000g_path": "/your_path_to_1000_genomes_vcfs_here/",
+	
+	"pop_list_1000g_path": "1000genomes_selected_individuals_noAdmix_ind.txt",
+	
+	"chromosome": [
+	"1", "2", "3", "4", "5", "6", 
+	"7", "8", "9", "10", "11", "12", 
+	"13", "14", "15", "16", "17", "18", 
+	"19", "20", "21", "22"
+	]
+}
+
+```
+Add the full path to where the downloaed 1000 genomes path is after `"vcf_1000g_path": `. Make sure the path has "/" at the end and is in quotes (like in the above example).
+
+Add the name (and full path) of the individuals you want to have in your reference panel after `"pop_list_1000g_path": ` 
