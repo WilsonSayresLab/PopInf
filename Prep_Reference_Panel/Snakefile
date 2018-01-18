@@ -6,7 +6,7 @@ configfile: "prep_ref.config.json"
 
 rule all:
 	input:
-		expand("1000genomes/chr{chrm}_10000genomes_selected_individuals.vcf", chrm=chromosome)
+		expand("1000genomes/chr{chrm}_10000genomes_selected_individuals.vcf", chrm=config["chromosome"])
 
 
 rule subset_1000genomes:
