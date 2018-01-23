@@ -79,4 +79,4 @@ snakemake -j 15 --cluster "sbatch -n 2 -t 96:00:00"
 
 After snakemake has completed, you can move onto running popInf. Make sure the vcf file for the samples with unknown ancestry are also separated by chromosome. 
 
-#anagha
+
