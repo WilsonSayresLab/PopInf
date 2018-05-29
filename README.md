@@ -9,6 +9,7 @@ Below are steps for running PopInf. PopInf is incorporated into the workflow sys
  - Variants for sample(s) of individuals with unknown or self-reported ancestry in VCF file format separated by chromosome.
  - Tab delimited file for the reference panel. This file must contain 3 columns: 1) The individual's sample name, and 2) sex information (i.e. male, femal, unkown) and 3) Population information for the corresponding individual.
  - Tab delemited file for the individuals with unknown or self-reported ancestry. This file must contain 3 columns: 1) The individual's sample name, and 2) sex information (i.e. male, femal, unkown) and 3) Population information for the corresponding individual (this column can be labeled "unkown" for this file).
+ - Reference Genome file (.fa) used for mapping variants. Make sure there are accompanying index (.fai) and dictionary (.dict) files. 
 
 ## Step 1: Set up your enviroment 
 PopInf uses a variety of programs. We will set up a conda environment to manage all necessary packages and programs. 
