@@ -1,5 +1,5 @@
 # Prepare Referece Panel 
-This document will guide you through preparing your reference panel VCF (variant call format) files for input into PopInf. In this tutorial, we will use a subset of the 1000 Genomes Release 3 whole genome sequence data. However, PopInf can take any VCF files with individuals from any population or any data set. If you would like to use different populations in your reference panel, you can do so. If you are making your own reference panel, you do not need to follow this readme. Just make sure your vcf files are separated by chromosome. 
+This document will guide you through preparing your reference panel VCF (variant call format) files for input into PopInf. In this tutorial, we will use a subset of the 1000 Genomes Release 3 whole genome sequence data. However, PopInf can take any VCF files with individuals from any population or any genomic data set. If you would like to use different populations in your reference panel, you can do so. If you are making your own reference panel, you do not need to follow this readme. Just make sure your vcf files are separated by chromosome. 
 
 ## What you need to prepare the reference panel 
 You will need the following to prepare the reference panel:
