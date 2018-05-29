@@ -45,3 +45,7 @@ conda istall -c bioconda r-plotrix
 conda install -c r r-car
 ```
 
+## Step 2: Prepare the reference panel
+See the readme file in the folder called "`Prep_Reference_Panel`" 
+
+## Step 3: 
