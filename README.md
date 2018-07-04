@@ -59,11 +59,10 @@ Then for the unknown panel, create two tab delimited text files for males and fe
 ### Separate the reference and unknown panel files by biological sex
 First, edit the sbatch script to include your directories and file names. Make sure that your reference panel and unknown panel are files. To zip the vcf files, use the follow command:
 
-'''
+```
 bgzip -c file.vcf > file.vcf.gz
 tabix -p vcf file.vcf.gz
-'''
-
+```
 You can submit the sbatch script as a job on your cluster.
 
 
