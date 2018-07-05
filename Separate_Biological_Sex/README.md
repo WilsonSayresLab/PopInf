@@ -16,7 +16,7 @@ tabix -p vcf file.vcf.gz
 ```
 
 ## Step 1: Set up your environment 
-popInf and the reference panel set up use a variety of programs. We will set up a conda environment to manage all necessary packages and programs. 
+popInf and the reference panel are set up to use a variety of programs. We will set up a conda environment to manage all necessary packages and programs. 
 
 ### Install Anaconda or Miniconda
 First, you will have to install Anaconda or Miniconda. Please refer to Conda's documentation for steps on how to install conda. See: https://conda.io/docs/index.html
