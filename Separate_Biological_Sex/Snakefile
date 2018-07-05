@@ -1,0 +1,38 @@
+configfile: "popInf_separateBiologicalSex.config.json"
+
+rule all:
+	input:
+		expand("files_by_biologicalSex/ref_panel/chr{chrm}_males_reference_panel.recode.vcf", chrm=config["chromosome"]),
+		expand("files_by_biologicalSex/unk_panel/chr{chrm}_males_unknown_panel.recode.vcf", chrm=config["chromosome"]),
+		expand("files_by_biologicalSex/ref_panel/chr{chrm}_females_reference_panel.recode.vcf", chrm=config["chromosome"]),
+		expand("files_by_biologicalSex/unk_panel/chr{chrm}_females_unknown_panel.recode.vcf", chrm=config["chromosome"])
+	
+rule keep_males:
+	input:
+		ref_panel_files = (config["vcf_ref_panel_path"] + config["vcf_ref_panel_prefix"] + "{chrm}" + config["vcf_ref_panel_suffix"]),
+		unk_panel_files = (config["vcf_unknown_set_path"] + config["vcf_unknown_set_prefix"] + "{chrm}" + config["vcf_unknown_set_suffix"]),
+		ref_males_list = config["ref_males_sample_list"],
+		unk_males_list = config["unk_males_sample_list"]
+	output:
+		reference_males = "files_by_biologicalSex/ref_panel/chr{chrm}_males_reference_panel.recode.vcf",
+		unknown_males = "files_by_biologicalSex/unk_panel/chr{chrm}_males_unknown_panel.recode.vcf"
+	shell: """
+		vcftools --gzvcf {input.ref_panel_files} --keep {input.ref_males_list} --recode --out {output.reference_males};
+		vcftools --gzvcf {input.unk_panel_files} --keep {input.unk_males_list} --recode --out {output.unknown_males}
+		"""
+		
+rule keep_females:
+	input:
+		ref_panel_files = (config["vcf_ref_panel_path"] + config["vcf_ref_panel_prefix"] + "{chrm}" + config["vcf_ref_panel_suffix"]),
+		unk_panel_files = (config["vcf_unknown_set_path"] + config["vcf_unknown_set_prefix"] + "{chrm}" + config["vcf_unknown_set_suffix"]),
+		ref_females_list = config["ref_females_sample_list"],
+		unk_females_list = config["unk_females_sample_list"]
+	output:
+		reference_females = "files_by_biologicalSex/ref_panel/chr{chrm}_females_reference_panel.recode.vcf",
+		unknown_females = "files_by_biologicalSex/unk_panel/chr{chrm}_females_unknown_panel.recode.vcf"
+	shell: """
+		vcftools --gzvcf {input.ref_panel_files} --keep {input.ref_females_list} --recode --out {output.reference_females};
+		vcftools --gzvcf {input.unk_panel_files} --keep {input.unk_females_list} --recode --out {output.unknown_females}
+		"""
+
+
