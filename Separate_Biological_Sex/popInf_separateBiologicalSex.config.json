@@ -1,4 +1,3 @@
-```
 {
 	"vcf_ref_panel_path": "/your_path_to_zipped_reference_panel_vcfs_here/",
 	"vcf_ref_panel_prefix": "reference_panel_file_prefix",
@@ -13,4 +12,3 @@
 	"unk_females_sample_list": "/your_path_to_unknown_panel_female_list/females_list.txt",
 }
 
-```
