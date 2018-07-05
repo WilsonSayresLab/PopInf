@@ -46,8 +46,9 @@ Then for the unknown panel, create two tab delimited text files for males and fe
 There is a Snakefile in this folder with the commands to separate the reference and unknown panel files by biological sex. Before running the Snakefile see the step below.
 
 ### Edit configuration file
-Associated with the `Snakefile` is a configuration file in json format. This file has 11 pieces of information needed to run the Snakefile.
-The config file is named `popInf_separateBiologicalSex.config.json` and is located in this folder. \
+Associated with the Snakefile is a configuration file in json format. This file has 11 pieces of information needed to run the Snakefile.
+The config file is named `popInf_separateBiologicalSex.config.json` and is located in this folder. 
+
 `popInf_separateBiologicalSex.config.json`:
 
 ```
