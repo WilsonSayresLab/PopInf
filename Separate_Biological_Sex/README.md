@@ -47,38 +47,47 @@ To deactivate `popInf` environment: \
 `source deactivate popInf`
 
 ## Step 2: Create the biological sex sample lists
-First for the reference panel, create two tab delimited text files for males and females. The files must contain 3 columns: 1) the individual's sample name, and 2) sex information (i.e. male, female, unkown) and 3) population information for the corresponding individual.
+First for the reference panel, create two tab delimited text files for males and females. The files must contain 3 columns: 1) the individual's sample name, and 2) sex information (i.e. male, female, unknown) and 3) population information for the corresponding individual.
 
-Then for the unknown panel, create two tab delimited text files for males and females. The files must contain 3 columns: 1) the individual's sample name, and 2) sex information (i.e. male, female, unkown) and 3) population information for the corresponding individual.
+Then for the unknown panel, create two tab delimited text files for males and females. The files must contain 3 columns: 1) the individual's sample name, and 2) sex information (i.e. male, female, unknown) and 3) population information for the corresponding individual.
 
-## Step 3: Make sure reference and unknown VCF files are zipped
-
-## Step 4: Run Snakemake
+## Step 3: Run Snakemake
 There is a Snakefile in this folder with the commands to separate the reference and unknown panel files by biological sex. Before running the Snakefile see the step below.
 
 ### Edit configuration file
-Associated with the `snakefile` is a configuration file in json format. This file has 3 pieces of informaiton needed to run the snakefile.
-The config file is named `prep_ref.config.json` and is located in this folder. \
-`prep_ref.config.json`:
+Associated with the `Snakefile` is a configuration file in json format. This file has 11 pieces of information needed to run the Snakefile.
+The config file is named `popInf_separateBiologicalSex.config.json` and is located in this folder. \
+`popInf_separateBiologicalSex.config.json`:
 
 ```
 {
-	"vcf_1000g_path": "/your_path_to_1000_genomes_vcfs_here/",
-	
-	"pop_list_1000g": "1000genomes_selected_individuals_noAdmix_ind.txt",
-	
-	"chromosome": [
-	"1", "2", "3", "4", "5", "6", 
-	"7", "8", "9", "10", "11", "12", 
-	"13", "14", "15", "16", "17", "18", 
-	"19", "20", "21", "22", "X"
-	]
+	"vcf_ref_panel_path": "/your_path_to_zipped_reference_panel_vcfs_here/",
+	"vcf_ref_panel_prefix": "reference_panel_file_prefix"
+	"vcf_ref_panel_suffix": "reference_panel_file_suffix.vcf.gz"
+	"vcf_unknown_set_path": "/your_path_to_zipped_unknown_panel_vcfs_here/",
+	"vcf_unknown_set_prefix": "unknown_panel_file_prefix"
+	"vcf_unknown_set_suffix": "unknown_panel_file_suffix.vcf.gz"
+	"chromosome": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", 	                 "19", "20", "21", "22", "X"],
+	"ref_males_sample_list": "/your_path_to_reference_panel_male_list/males_list.txt",
+	"ref_females_sample_list": "/your_path_to_reference_panel_male_list/females_list.txt",
+	"unk_males_sample_list": "/your_path_to_unknown_panel_male_list/males_list.txt",
+	"unk_females_sample_list": "/your_path_to_unknown_panel_female_list/females_list.txt",
 }
 
 ```
-Add the full path to the downloaed 1000 genomes after `"vcf_1000g_path": `. Make sure the path has "/" at the end and is in quotes (like in the above example).
+Add the full path to the zipped reference panel VCF files that are separated by chromosome after `"vcf_ref_panel_path": `. Make sure the path has "/" at the end and is in quotes (like in the above example).
 
-Add the name (and full path) of the individuals you want to have in your reference panel after `"pop_list_1000g_path": ` 
+Add the part of the name of the reference VCF files that comes before the chr number after `"vcf_ref_panel_prefix": `. For example, if the reference VCF file for chromosome 1 is named `chr1_reference_panel.vcf.gz` then you would add `"chr"` to this part of the config file. Make sure that this is in quotes (like in the above example).
 
-You may leave `"chromosome": ` as is, unless you do not want to analyze all chromosomes. popInf has an option to analyze the X chromosome (separately from the autosomes) so the X chromosome is added here. If you are not interested in analyzing the X chromosome, just remove "X"
+Add the part of the name of the reference VCF files that comes after the chr number after `"vcf_ref_panel_suffix": `. For example, if the reference VCF file for chromosome 1 is named `chr1_reference_panel.vcf.gz` then you would add `"_reference_panel.vcf.gz"` to this part of the config file. Make sure that this is in quotes (like in the above example).
+
+Add the full path to the zipped unknown panel VCF files that are separated by chromosome after `"vcf_unknown_set_path": `. Make sure the path has "/" at the end and is in quotes (like in the above example).
+
+Add the part of the name of the unknown VCF files that comes before the chr number after `"vcf_unknown_set_prefix": `. For example, if the unknown VCF file for chromosome 1 is named `chr1_unknown_panel.vcf.gz` then you would add `"chr"` to this part of the config file. Make sure that this is in quotes (like in the above example).
+
+Add the part of the name of the unknown VCF files that comes after the chr number after `"vcf_unknown_set_suffix": `. For example, if the unknown VCF file for chromosome 1 is named `chr1_unknown_panel.vcf.gz` then you would add `"_unknown_panel.vcf.gz"` to this part of the config file. Make sure that this is in quotes (like in the above example).
+
+You may leave `"chromosome": ` as is, unless you do not want to analyze all chromosomes. popInf has an option to analyze the X chromosome (separately from the autosomes) so the X chromosome is added here. If you are not interested in analyzing the X chromosome, just remove "X".
+
+Add the full path to and the file names of the tab delimited text files for the reference panel males and females and unknown panel males and females after `"ref_males_sample_list": `, `"ref_females_sample_list": `, `"unk_males_sample_list": `, and `"unk_females_sample_list": `.
 
