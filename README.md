@@ -49,23 +49,8 @@ conda install -c r r-car
 See the readme file in the folder called "`Prep_Reference_Panel`" 
 
 ## Step 3: Separate reference panel and unknown panel by biological sex
-If you would like to analyze the biological sexes separately, follow this step to separate your reference and unknown panel files by biological sex. 
-
-### Create the biological sex sample lists
-First for the reference panel, create two tab delimited text files for males and females. The files must contain 3 columns: 1) the individual's sample name, and 2) sex information (i.e. male, female, unkown) and 3) population information for the corresponding individual.
-
-Then for the unknown panel, create two tab delimited text files for males and females. The files must contain 3 columns: 1) the individual's sample name, and 2) sex information (i.e. male, female, unkown) and 3) population information for the corresponding individual.
-
-### Separate the reference and unknown panel files by biological sex
-First, edit the sbatch script to include your directories and file names. Make sure that your reference panel and unknown panel are files. To zip the vcf files, use the follow command:
-
-```
-bgzip -c file.vcf > file.vcf.gz
-tabix -p vcf file.vcf.gz
-```
-You can submit the sbatch script as a job on your cluster.
+If you would like to analyze the biological sexes separately, see the readme file in the folder called "`separate_biologicalSex`"
 
 
-'''
 
 
