@@ -21,7 +21,7 @@ popInf and the reference panel set up use a variety of programs. We will set up 
 ### Install Anaconda or Miniconda
 First, you will have to install Anaconda or Miniconda. Please refer to Conda's documentation for steps on how to install conda. See: https://conda.io/docs/index.html
 
-### Create the enviroment
+### Create the environment
 You can name your environment whatever you would like. We named this environment 'popInf' and we will use this environment for all analyses. 
 
 Create conda environment called `popInf`: \
@@ -53,11 +53,11 @@ The config file is named `popInf_separateBiologicalSex.config.json` and is locat
 ```
 {
 	"vcf_ref_panel_path": "/your_path_to_zipped_reference_panel_vcfs_here/",
-	"vcf_ref_panel_prefix": "reference_panel_file_prefix"
-	"vcf_ref_panel_suffix": "reference_panel_file_suffix.vcf.gz"
+	"vcf_ref_panel_prefix": "reference_panel_file_prefix",
+	"vcf_ref_panel_suffix": "reference_panel_file_suffix.vcf.gz",
 	"vcf_unknown_set_path": "/your_path_to_zipped_unknown_panel_vcfs_here/",
-	"vcf_unknown_set_prefix": "unknown_panel_file_prefix"
-	"vcf_unknown_set_suffix": "unknown_panel_file_suffix.vcf.gz"
+	"vcf_unknown_set_prefix": "unknown_panel_file_prefix",
+	"vcf_unknown_set_suffix": "unknown_panel_file_suffix.vcf.gz",
 	"chromosome": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", 	                 "19", "20", "21", "22", "X"],
 	"ref_males_sample_list": "/your_path_to_reference_panel_male_list/males_list.txt",
 	"ref_females_sample_list": "/your_path_to_reference_panel_male_list/females_list.txt",
@@ -93,3 +93,4 @@ source activate popInf
 snakemake -j 15 --cluster "sbatch -n 2 -t 96:00:00"
 ```
 After snakemake has completed, you can move onto running popInf and analyzing each biological sex separately.
+
