@@ -15,15 +15,6 @@ bgzip -c file.vcf > file.vcf.gz
 tabix -p vcf file.vcf.gz
 ```
 
-
-### Separate the reference and unknown panel files by biological sex
-First, edit the sbatch script to include your directories and file names. Make sure that your reference panel and unknown panel are files. To zip the vcf files, use the follow command:
-
-You can submit the sbatch script as a job on your cluster.
-
-
-'''
-
 ## Step 1: Set up your environment 
 popInf and the reference panel set up use a variety of programs. We will set up a conda environment to manage all necessary packages and programs. 
 
@@ -91,3 +82,14 @@ You may leave `"chromosome": ` as is, unless you do not want to analyze all chro
 
 Add the full path to and the file names of the tab delimited text files for the reference panel males and females and unknown panel males and females after `"ref_males_sample_list": `, `"ref_females_sample_list": `, `"unk_males_sample_list": `, and `"unk_females_sample_list": `.
 
+### Run snakemake
+You can submit the Snakefile as a job on your cluster. See the "Cluster execution" section of snakemake documentation (https://snakemake.readthedocs.io/en/stable/tutorial/additional_features.html)
+
+NOTE: The configuration file and Snakefile must be in the same directory.
+
+```
+cd /path/to/snakefile/directory/
+source activate popInf
+snakemake -j 15 --cluster "sbatch -n 2 -t 96:00:00"
+```
+After snakemake has completed, you can move onto running popInf and analyzing each biological sex separately.
