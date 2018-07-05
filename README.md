@@ -7,8 +7,8 @@ Below are steps for running PopInf. PopInf is incorporated into the workflow sys
 ## What you need to run PopInf
  - Variants for a reference panel in VCF file format separated by chromosome.
  - Variants for sample(s) of individuals with unknown or self-reported ancestry in VCF file format separated by chromosome.
- - Tab delimited file for the reference panel. This file must contain 3 columns: 1) The individual's sample name, and 2) sex information (i.e. male, female, unkown) and 3) Population information for the corresponding individual.
- - Tab delemited file for the individuals with unknown or self-reported ancestry. This file must contain 3 columns: 1) The individual's sample name, and 2) sex information (i.e. male, female, unkown) and 3) Population information for the corresponding individual (this column can be labeled "unknown" for this file).
+ - Tab delimited file for the reference panel. This file must contain 3 columns: 1) the individual's sample name, and 2) sex information (i.e. male, female, unkown) and 3) population information for the corresponding individual.
+ - Tab delemited file for the individuals with unknown or self-reported ancestry. This file must contain 3 columns: 1) the individual's sample name, and 2) sex information (i.e. male, female, unkown) and 3) population information for the corresponding individual (this column can be labeled "unknown" for this file).
  - Reference Genome file (.fa) used for mapping variants. Make sure there are accompanying index (.fai) and dictionary (.dict) files. 
 
 ## Step 1: Set up your enviroment 
@@ -52,9 +52,9 @@ See the readme file in the folder called "`Prep_Reference_Panel`"
 If you would like to analyze the biological sexes separately, follow this step to separate your reference and unknown panel files by biological sex. 
 
 ### Create the biological sex sample lists
-First for the reference panel, create two tab delimited text files for males and females. The files must contain 3 columns: 1) The individual's sample name, and 2) sex information (i.e. male, female, unkown) and 3) Population information for the corresponding individual.
+First for the reference panel, create two tab delimited text files for males and females. The files must contain 3 columns: 1) the individual's sample name, and 2) sex information (i.e. male, female, unkown) and 3) population information for the corresponding individual.
 
-Then for the unknown panel, create two tab delimited text files for males and females. The files must contain 3 columns: 1) The individual's sample name, and 2) sex information (i.e. male, female, unkown) and 3) Population information for the corresponding individual.
+Then for the unknown panel, create two tab delimited text files for males and females. The files must contain 3 columns: 1) the individual's sample name, and 2) sex information (i.e. male, female, unkown) and 3) population information for the corresponding individual.
 
 ### Separate the reference and unknown panel files by biological sex
 First, edit the sbatch script to include your directories and file names. Make sure that your reference panel and unknown panel are files. To zip the vcf files, use the follow command:
