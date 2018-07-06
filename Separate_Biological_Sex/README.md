@@ -4,7 +4,7 @@ This document will guide you through separating your reference panel and unknown
 ## What you need to separate the files by biological sex
 1. High performance computer (the reference files will likely be very large if you are analyzing sites across the entire genome).
 2. VCF files for the reference panel separated by chromosome that are zipped (see below if needed).
-3. VCF files for the unknown panel separated by chromosome zipped (see below if needed).
+3. VCF files for the unknown panel separated by chromosome that are zipped (see below if needed).
 3. Reference panel sample list with biological sexes specified (If using 1000 Genomes, we provide the list in this folder).
 4. Unknown panel sample list with biological sexes specified.
 
@@ -38,36 +38,40 @@ To deactivate `popInf` environment: \
 `source deactivate popInf`
 
 ## Step 2: Create the biological sex sample lists
-First for the reference panel, create two tab delimited text files for males and females. The files must contain 3 columns: 1) the individual's sample name, and 2) sex information (i.e. male, female, unknown) and 3) population information for the corresponding individual.
+First, for the reference panel, create two tab delimited text files for males and females. The files must contain 3 columns: (1) the individual's sample name, (2) sex information (i.e. male, female, unknown) and (3) population information for the corresponding individual.
 
-Then for the unknown panel, create two tab delimited text files for males and females. The files must contain 3 columns: 1) the individual's sample name, and 2) sex information (i.e. male, female, unknown) and 3) population information for the corresponding individual.
+Then for the unknown panel, create two tab delimited text files for males and females. The files must contain 3 columns: (1) the individual's sample name, and (2) sex information (i.e. male, female, unknown) and (3) population information for the corresponding individual.
+
+You must make sure that you keep the everything consistent - the sample names, biological sex, and population information - across the files containing all the samples for the reference and unknown panels as well as the files for each biological sex. 
 
 ## Step 3: Run Snakemake
 There is a Snakefile in this folder with the commands to separate the reference and unknown panel files by biological sex. Before running the Snakefile see the step below.
 
 ### Edit configuration file
 Associated with the Snakefile is a configuration file in json format. This file has 11 pieces of information needed to run the Snakefile.
-The config file is named `popInf_separateBiologicalSex.config.json` and is located in this folder. 
+The config file is named `popInfSeparateBiologicalSex.config.json` and is located in this folder. 
 
-`popInf_separateBiologicalSex.config.json`:
+`popInfSeparateBiologicalSex.config.json`:
 
 ```
 {
-	"vcf_ref_panel_path": "/your_path_to_zipped_reference_panel_vcfs_here/",
-	"vcf_ref_panel_prefix": "reference_panel_file_prefix",
-	"vcf_ref_panel_suffix": "reference_panel_file_suffix.vcf.gz",
-	"vcf_unknown_set_path": "/your_path_to_zipped_unknown_panel_vcfs_here/",
-	"vcf_unknown_set_prefix": "unknown_panel_file_prefix",
-	"vcf_unknown_set_suffix": "unknown_panel_file_suffix.vcf.gz",
-	"chromosome": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", 
-	"16", "17", "18", "19", "20", "21", "22", "X"],
-	"ref_males_sample_list": "/your_path_to_reference_panel_male_list/males_list.txt",
-	"ref_females_sample_list": "/your_path_to_reference_panel_male_list/females_list.txt",
-	"unk_males_sample_list": "/your_path_to_unknown_panel_male_list/males_list.txt",
-	"unk_females_sample_list": "/your_path_to_unknown_panel_female_list/females_list.txt",
+  "vcf_ref_panel_path": "/your_path_to_zipped_reference_panel_vcfs_here/",
+  "vcf_ref_panel_prefix": "reference_panel_file_prefix",
+  "vcf_ref_panel_suffix": "reference_panel_file_suffix.vcf.gz",
+  "vcf_unknown_set_path": "/your_path_to_zipped_unknown_panel_vcfs_here/",
+  "vcf_unknown_set_prefix": "unknown_panel_file_prefix",
+  "vcf_unknown_set_suffix": "unknown_panel_file_suffix.vcf.gz",
+  "chromosome": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", 
+  "16", "17", "18", "19", "20", "21", "22", "X"],
+  "ref_males_sample_list": "/your_path_to_reference_panel_male_list/males_list.txt",
+  "ref_females_sample_list": "/your_path_to_reference_panel_male_list/females_list.txt",
+  "unk_males_sample_list": "/your_path_to_unknown_panel_male_list/males_list.txt",
+  "unk_females_sample_list": "/your_path_to_unknown_panel_female_list/females_list.txt",
 }
 
 ```
+While editing the .json file, make sure that any white space or indentations are create by spaces, not tabs. If there are tabs present in this file, snakemake will run into the error of not being able to properly read the .json file. 
+
 Add the full path to the zipped reference panel VCF files that are separated by chromosome after `"vcf_ref_panel_path": `. Make sure the path has "/" at the end and is in quotes (like in the above example).
 
 Add the part of the name of the reference VCF files that comes before the chr number after `"vcf_ref_panel_prefix": `. For example, if the reference VCF file for chromosome 1 is named `chr1_reference_panel.vcf.gz` then you would add `"chr"` to this part of the config file. Make sure that this is in quotes (like in the above example).
