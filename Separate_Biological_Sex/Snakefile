@@ -1,4 +1,4 @@
-configfile: "popInf_separateBiologicalSex.config.json"
+configfile: "popInfSeparateBiologicalSex.config.json"
 
 rule all:
 	input:
@@ -17,8 +17,8 @@ rule keep_males:
 		reference_males = "files_by_biologicalSex/ref_panel/chr{chrm}_males_reference_panel.recode.vcf",
 		unknown_males = "files_by_biologicalSex/unk_panel/chr{chrm}_males_unknown_panel.recode.vcf"
 	shell: """
-		vcftools --gzvcf {input.ref_panel_files} --keep {input.ref_males_list} --recode --out {output.reference_males};
-		vcftools --gzvcf {input.unk_panel_files} --keep {input.unk_males_list} --recode --out {output.unknown_males}
+		vcftools --gzvcf {input.ref_panel_files} --keep {input.ref_males_list} --recode -c > {output.reference_males};
+		vcftools --gzvcf {input.unk_panel_files} --keep {input.unk_males_list} --recode -c > {output.unknown_males}
 		"""
 		
 rule keep_females:
@@ -31,8 +31,11 @@ rule keep_females:
 		reference_females = "files_by_biologicalSex/ref_panel/chr{chrm}_females_reference_panel.recode.vcf",
 		unknown_females = "files_by_biologicalSex/unk_panel/chr{chrm}_females_unknown_panel.recode.vcf"
 	shell: """
-		vcftools --gzvcf {input.ref_panel_files} --keep {input.ref_females_list} --recode --out {output.reference_females};
-		vcftools --gzvcf {input.unk_panel_files} --keep {input.unk_females_list} --recode --out {output.unknown_females}
+		vcftools --gzvcf {input.ref_panel_files} --keep {input.ref_females_list} --recode -c > {output.reference_females};
+		vcftools --gzvcf {input.unk_panel_files} --keep {input.unk_females_list} --recode -c > {output.unknown_females}
 		"""
+
+
+
 
 
