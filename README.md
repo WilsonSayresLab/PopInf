@@ -102,7 +102,7 @@ Specify whether the analysis is to be done on the autosomes or the X chromosome 
 
 ### Providing the information to analyze the autosomes
 
-Add the full path to and name of the reference genome file after `"ref_path": `. 
+Add the full path to and name of the reference genome file for the autosomes after `"ref_path": `. Make sure that this is in quotes (like in the above example).
 
 Add the full path to the zipped reference panel VCF files that are separated by chromosome after `"vcf_ref_panel_path": `. Make sure the path has "/" at the end and is in quotes (like in the above example).
 
@@ -118,9 +118,23 @@ Add the part of the name of the unknown VCF files that comes after the chr numbe
 
 You may leave `"chromosome": ` as is, unless you do not want to analyze all chromosomes. popInf has an option to analyze the X chromosome (separately from the autosomes) so the X chromosome is added here. If you are not interested in analyzing the X chromosome, just remove "X".
 
-Specify the biological sex you would like to analyze after `"biological_sex_autosomes": `. The following biological sexes could be specified: `"both"`, `"male"`, or `"female"`. 
+Specify the biological sex you would like to analyze after `"biological_sex_autosomes": `. The following biological sexes could be specified: `"both"`, `"male"`, or `"female"`. Make sure that this is in quotes (like in the above example).
 
 ### Providing the information to analyze the X chromosome
+
+Add the full path to and name of the reference genome file for the X chromosome after `"ref_path_chrX": `. Make sure that this is in quotes (like in the above example).
+
+Add the full path to the zipped reference panel VCF file for the X chromosome after `"vcf_ref_panel_path_X": `. Make sure the path has "/" at the end and is in quotes (like in the above example).
+
+Add the full name of the zipped reference panel VCF file for the X chromosome after `"vcf_ref_panel_file": `. Make sure that this is in quotes (like in the above example).
+
+Add the full path to the zipped unknown panel VCF file for the X chromosome after `"vcf_unknown_set_path_X": `. Make sure the path has "/" at the end and is in quotes (like in the above example).
+
+Add the full name of the zipped unknown panel VCF file for the X chromosome after `"vcf_unknown_set_file": `. Make sure that this is in quotes (like in the above example).
+
+Specify the biological sex you would like to analyze after `"biological_sex_chrX": `. The following biological sexes could be specified: `"both"`, `"male"`, or `"female"`. Make sure that this is in quotes (like in the above example).
+
+Add the full path to and name of the file containing the X chromosome PARS regions coordinates and XTR region coordinates after `"X_chr_coordinates": `. The coordinates are provided in the file named `X_chromosome_regions_XTR_hg19.bed` and this file is located in this folder. 
 
 ## Step 5: Edit the .sh script
 
