@@ -86,6 +86,12 @@ The config file is named `popInf.config.json` and is located in this folder.
 }
 ```
 
+Add the full path and file name of the reference panel sample information text file with the sample names, biological sex, and populations after `"ref_panel_pop_info_path": `. 
+
+Add the full path and file name of the unknown panel sample information text file with the sample names, biological sex, and populations after `"unkn_panel_pop_info_path": `.
+
+Specify whether the analysis is to be done on the autosomes or the X chromosome after `"Autosomes_Yes_or_No": `. If the autosomes are to be analyzed, type `"Y"`. If the X chromosome is to be analyzed, type `"N"`.
+
 Add the full path to the reference panel VCF files that are separated by chromosome after `"vcf_ref_panel_path": `. Make sure the path has "/" at the end and is in quotes (like in the above example).
 
 Add descriptions of what to fill in on the .json file
