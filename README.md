@@ -48,8 +48,8 @@ conda install -c r r-car
 ## Step 2: Prepare the reference panel
 See the readme file in the folder called "`Prep_Reference_Panel`" 
 
-## Step 3: Separate reference panel and unknown panel by biological sex
-If you would like to analyze the biological sexes separately, see the readme file in the folder called "`Separate_Biological_Sex`"
+## Optional Step: Separate reference panel and unknown panel files by biological sex
+If you would like to analyze the biological sexes separately, see the readme file in the folder called "`Separate_Biological_Sex`" for instructions on how to separate the reference and unknown files by biological sexes. These separated files can then be run with PopInf.
 
 ## Step 4: Edit the configuration file
 Associated with the Snakefile is a configuration file in json format. This file has 19 pieces of information needed to run the Snakefile.
