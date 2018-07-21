@@ -133,7 +133,7 @@ Specify the biological sex you would like to analyze after `"biological_sex_chrX
 
 Add the full path to and name of the file containing the X chromosome PARS regions coordinates and XTR region coordinates after `"X_chr_coordinates": `. The coordinates are provided in the file named `X_chromosome_regions_XTR_hg19.bed` and this file is located in this folder. Make sure that this is in quotes (like in the above example).
 
-## Step 5: Running PopIng
+## Step 5: Running PopInf
 This step will provide instructions on how to run PopInf. With our server, we chose to use an sbatch script to run PopInf. This script is provided in this folder if your wish to use this. However, depending on your server, you might need to run PopInf differently. All of the necessary scripts are provided in this folder.
 
 ### Editing the .sh script
@@ -188,6 +188,8 @@ source activate PopInf
 sbatch snakemake_PopInf_slurm.sh
 ```
 
+## The results of running PopInf
+After all of these steps are incomplete, PopInf will be finished running. The program will generate PCA plots as well as inferred population reports. The PCA plots will provide a visual representation of how your unknown panel compares to the reference panel. The inferred population reports will provide a tab delimited text file specifying the inferred population of a particular sample based on: 1 standard deviation radius for a known population cluster, 2 standard deviations radius for a known population cluster, 3 standard deviations radius for a known population cluster, and pair-wise comparisons between the centroids for all of the known clusters.
 
 
 
