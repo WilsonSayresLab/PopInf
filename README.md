@@ -47,10 +47,10 @@ conda install -c r r-car
 ```
 
 ## Step 2: Prepare the reference panel
-See the readme file in the folder called "`Prep_Reference_Panel`" 
+See the readme file in the folder called "`Prep_Reference_Panel`".
 
 ## Step 3: Prepare the unknown panel
-See the readme file in the folder called "`Prep_Reference_Panel`" 
+See the readme file in the folder called "`Prep_Reference_Panel`". 
 
 ## Optional Step: Separate reference panel and unknown panel files by biological sex
 If you would like to analyze the biological sexes separately, see the readme file in the folder called "`Separate_Biological_Sex`" for instructions on how to separate the reference and unknown files by biological sexes. These separated files can then be run with PopInf.
