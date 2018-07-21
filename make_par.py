@@ -1,7 +1,6 @@
 # make_par.py
 # Makes parameters file for smartpca 
-# Author: Angela Taravella and Anagha Deshpande
-# 2017-08-21
+# Authors: Angela Taravella and Anagha Deshpande
 
 import re
 import sys 
