@@ -1,4 +1,4 @@
-# Prepare Referece Panel 
+# Prepare Unknown Panel 
 This document will guide you through preparing your unknown panel VCF (variant call format) files for input into PopInf. This tutorial for preparing the unknown panel files can be used for any data set that you want.
 
 ## What you need to prepare the unknown panel 
