@@ -279,7 +279,6 @@ for (i in UnkownPop_data_WithInfo[,1]) {
     x <- as.numeric(mat_meanx_meany_rad[cluster,2])
     y <- as.numeric(mat_meanx_meany_rad[cluster,3])
     dist_i_to_cluster_centriod <- sqrt( ((x - pc_x)^2) + ((y - pc_y)^2) )
-    #cluster_dist_i <- paste(dist_i_to_cluster_centriod)
     cluster_dist_i <- format(round(dist_i_to_cluster_centriod, 5), nsmall = 5)
     vector_to_add_df <- c(vector_to_add_df, cluster_dist_i)
   }
