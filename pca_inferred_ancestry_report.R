@@ -161,7 +161,6 @@ for (i in 1:length(test_vector)) {
       if (test_vector[i] == test_vector[num]) {}
       else {
         comparison <- c(test_vector[i], test_vector[num])
-        # so now we have to get our values we need to find midpoints
         my_list <- circle_function_noplot(test_vector[i])
         test_mean_x_first <- my_list$mean_x
         test_mean_y_first <- my_list$mean_y
