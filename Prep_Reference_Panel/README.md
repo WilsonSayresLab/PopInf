@@ -15,7 +15,7 @@ bgzip -c file.vcf > file.vcf.gz
 tabix -p vcf file.vcf.gz
 ```
 
-## How to separate your VCF files by chromosome
+### How to separate your VCF files by chromosome
 If your VCF files for the reference panel are not already separated by chromosome, you can use the following commands to separate them. PopInf will only accept VCF files separated by chromosome.
 
 ```
