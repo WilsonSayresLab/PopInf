@@ -10,7 +10,6 @@ Below are steps for running PopInf. PopInf is incorporated into the workflow sys
  3. Tab delimited file for the reference panel. This file must contain 3 columns: 1) the individual's sample name, and 2) sex information (i.e. male, female, unkown) and 3) population information for the corresponding individual.
  4. Tab delemited file for the individuals with unknown or self-reported ancestry. This file must contain 3 columns: 1) the individual's sample name, and 2) sex information (i.e. male, female, unkown) and 3) population information for the corresponding individual (this column can be labeled "unknown" for this file).
  5. Reference Genome file (.fa) used for mapping variants. Make sure there are accompanying index (.fai) and dictionary (.dict) files.
- 6. The following files and scripts all located in the same directory: (1) Snakefile, (2) snakemake_PopInf_slurm.sh, (3) popInf_environment.yaml, (4) popInf.config.json, (5) make_merge_list.py, (6) make_par.py, and (7) pca_inferred_ancestry_report.R. These scripts and files are all provided in this folder.
 
 ## Step 1: Set up your enviroment 
 PopInf uses a variety of programs. We will set up a conda environment to manage all necessary packages and programs. 
@@ -141,7 +140,7 @@ Before running the sbatch script, some necessary edits need to be made to the sc
 
 Line 7 - edit the email after `#SBATCH --mail-user= ` to be the email that you wish your slurm notification to be sent to
 
-Line 11 - edit the path to which all of the following scripts and files are located: (1) Snakefile, (2) snakemake_PopInf_slurm.sh, (3) popInf_environment.yaml, (4) popInf.config.json, (5) make_merge_list.py, (6) make_par.py, and (7) pca_inferred_ancestry_report.R. These scripts and files are all provided in this folder.
+Line 11 - edit the path to which all of the following scripts and files are located: (1) Snakefile, (2) snakemake_PopInf_slurm.sh, (3) popInf_environment.yaml, (4) popInf.config.json, (5) make_merge_list.py, (6) make_par.py, (7) pca_inferred_ancestry_report.R. These scripts and files are all provided in this folder. These scripts and files must all be located within the same directory. 
 
 Line 30 - edit the email to be the email that you wish your slurm notification to be sent to
 
