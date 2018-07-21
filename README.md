@@ -10,15 +10,7 @@ Below are steps for running PopInf. PopInf is incorporated into the workflow sys
  3. Tab delimited file for the reference panel. This file must contain 3 columns: 1) the individual's sample name, and 2) sex information (i.e. male, female, unkown) and 3) population information for the corresponding individual.
  4. Tab delemited file for the individuals with unknown or self-reported ancestry. This file must contain 3 columns: 1) the individual's sample name, and 2) sex information (i.e. male, female, unkown) and 3) population information for the corresponding individual (this column can be labeled "unknown" for this file).
  5. Reference Genome file (.fa) used for mapping variants. Make sure there are accompanying index (.fai) and dictionary (.dict) files.
- 6. The following files and scripts all located in the same directory:
-   - Snakefile
-   - snakemake_PopInf_slurm.sh
-   - popInf_environment.yaml
-   - popInf.config.json
-   - make_merge_list.py
-   - make_par.py
-   - pca_inferred_ancestry_report.R
-
+ 6. The following files and scripts all located in the same directory: (1) Snakefile, (2) snakemake_PopInf_slurm.sh, (3) popInf_environment.yaml, (4) popInf.config.json, (5) make_merge_list.py, (6) make_par.py, and (7) pca_inferred_ancestry_report.R. These scripts and files are all provided in this folder.
 
 ## Step 1: Set up your enviroment 
 PopInf uses a variety of programs. We will set up a conda environment to manage all necessary packages and programs. 
@@ -100,17 +92,14 @@ The config file is named `popInf.config.json` and is located in this folder.
 While editing the .json file, make sure that any white space or indentations are create by spaces, not tabs. If there are tabs present in this file, snakemake will run into the error of not being able to properly read the .json file. 
 
 ### Providing the reference and unknown panel sample information
-
 Add the full path and file name of the reference panel sample information text file with the sample names, biological sex, and populations after `"ref_panel_pop_info_path": `. 
 
 Add the full path and file name of the unknown panel sample information text file with the sample names, biological sex, and populations after `"unkn_panel_pop_info_path": `.
 
 ### Specifying the type of chromosome to be analyzed
-
 Specify whether the analysis is to be done on the autosomes or the X chromosome after `"Autosomes_Yes_or_No": `. If the autosomes are to be analyzed, type `"Y"`. If the X chromosome is to be analyzed, type `"N"`.
 
 ### Providing the information to analyze the autosomes
-
 Add the full path to and name of the reference genome file for the autosomes after `"ref_path": `. Make sure that this is in quotes (like in the above example).
 
 Add the full path to the zipped reference panel VCF files that are separated by chromosome after `"vcf_ref_panel_path": `. Make sure the path has "/" at the end and is in quotes (like in the above example).
@@ -130,7 +119,6 @@ You may leave `"chromosome": ` as is, unless you do not want to analyze all chro
 Specify the biological sex you would like to analyze after `"biological_sex_autosomes": `. The following biological sexes could be specified: `"both"`, `"male"`, or `"female"`. Make sure that this is in quotes (like in the above example).
 
 ### Providing the information to analyze the X chromosome
-
 Add the full path to and name of the reference genome file for the X chromosome after `"ref_path_chrX": `. Make sure that this is in quotes (like in the above example).
 
 Add the full path to the zipped reference panel VCF file for the X chromosome after `"vcf_ref_panel_path_X": `. Make sure the path has "/" at the end and is in quotes (like in the above example).
@@ -145,9 +133,60 @@ Specify the biological sex you would like to analyze after `"biological_sex_chrX
 
 Add the full path to and name of the file containing the X chromosome PARS regions coordinates and XTR region coordinates after `"X_chr_coordinates": `. The coordinates are provided in the file named `X_chromosome_regions_XTR_hg19.bed` and this file is located in this folder. Make sure that this is in quotes (like in the above example).
 
-## Step 5: Edit the .sh script
+## Step 5: Running PopIng
+This step will provide instructions on how to run PopInf. With our server, we chose to use an sbatch script to run PopInf. This script is provided in this folder if your wish to use this. However, depending on your server, you might need to run PopInf differently. All of the necessary scripts are provided in this folder.
 
-## Step 6: Run the .sh script
+### Editing the .sh script
+Before running the sbatch script, some necessary edits need to be made to the scripts. These edits are specified both within the script and here by line number.
+
+Line 7 - edit the email after `#SBATCH --mail-user= ` to be the email that you wish your slurm notification to be sent to
+
+Line 11 - edit the path to which all of the following scripts and files are located: (1) Snakefile, (2) snakemake_PopInf_slurm.sh, (3) popInf_environment.yaml, (4) popInf.config.json, (5) make_merge_list.py, (6) make_par.py, and (7) pca_inferred_ancestry_report.R. These scripts and files are all provided in this folder.
+
+Line 30 - edit the email to be the email that you wish your slurm notification to be sent to
+
+Line 42 - make sure the biological sex in the stem name and merge list name matches the one in the .json file
+
+Line 50 - make sure the biological sex in the file names match the one in the .json file
+
+Line 58 - make sure the biological sex in the file names match the one in the .json file
+
+Line 69 - make sure the biological sex in the file names match the one in the .json file
+
+Line 76 - make sure the biological sex in the file names match the one in the .json file
+
+Lines 84 and 85 - make sure the biological sex in the file names match the one in the .json file
+
+Line 96 - make sure the biological sex in the file names match the one in the .json file
+
+Line 112 - edit the email to be the email that you wish your slurm notification to be sent to
+
+Line 120 - make sure the biological sex in the file names match the one in the .json file
+
+Line 128 - make sure the biological sex in the file names match the one in the .json file
+
+Lines 136 and 137 - make sure the biological sex in the file names match the one in the .json file
+
+Line 145 - make sure the biological sex in the file names match the one in the .json file
+
+### Running the .sh script
+The following section discusses how the run the sbatch script to run PopInf. The script can be run differently depending on whether the autosomes or X chromosome is to be analyzed.
+
+#### For analyzing the autosomes, use the following commands to run the sbatch script:
+```
+cd /path/to/PopInf/scripts/
+source activate PopInf
+sbatch snakemake_PopInf_slurm.sh A
+```
+
+The `A` must be capitalized for the autosomes to be correctly analyzed. 
+
+#### For analyzing the X chromosome, use the following commands to run the sbatch script:
+```
+cd /path/to/PopInf/scripts/
+source activate PopInf
+sbatch snakemake_PopInf_slurm.sh
+```
 
 
 
