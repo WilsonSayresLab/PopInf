@@ -7,8 +7,8 @@ Below are steps for running PopInf. PopInf is incorporated into the workflow sys
 ## What you need to run PopInf
  1. Variants for a reference panel in VCF file format separated by chromosome.
  2. Variants for sample(s) of individuals with unknown or self-reported ancestry in VCF file format separated by chromosome.
- 3. Sample information file for the reference panel. This file must contain 3 tab-delimited columns: 1) the individual's sample name, and 2) sex information (i.e. male, female, unkown) and 3) population information for the corresponding individual.
- 4. Sample information file for the unknown samples. This file must contain 3 tab-delemited columns: 1) the individual's sample name, and 2) sex information (i.e. male, female, unkown) and 3) population information for the corresponding individual (this column can be labeled "unknown" for this file).
+ 3. Sample information file for the reference panel. This file must contain 3 tab-delimited columns: 1) the individual's sample name, and 2) sex information (i.e. male, female, unkown) and 3) population information for the corresponding individual. Our example for this file is provided in this folder and is called `ThousandGenomesSamples_AdmxRm_SHORT.txt`.
+ 4. Sample information file for the unknown samples. This file must contain 3 tab-delemited columns: 1) the individual's sample name, and 2) sex information (i.e. male, female, unkown) and 3) population information for the corresponding individual (this column can be labeled "unknown" for this file). Our example for this file is provided in this folder and is called `gtex_samples_SHORT.txt`.
  5. Reference Genome file (.fa) used for mapping variants. Make sure there are accompanying index (.fai) and dictionary (.dict) files.
 
 ## Step 1: Set up your enviroment 
@@ -41,7 +41,7 @@ Please note that "`<path and name of gatk jar file>`" is just the path and file 
 
 Additional packages within R must be installed into this environment as well. After activating the environment, type the following into the command line: 
 ```
-conda istall -c bioconda r-plotrix
+conda install -c bioconda r-plotrix
 conda install -c r r-car
 ```
 
@@ -52,8 +52,8 @@ See the readme file in the folder called "`Prep_Reference_Panel`".
 See the readme file in the folder called "`Prep_Unknown_Samples`".
 
 ## Step 4: Edit the configuration file
-Associated with the Snakefile is a configuration file in json format. This file has 19 pieces of information needed to run the Snakefile. To run PopInf, go through all lines in the configuration file and make sure to change the content as specified.
-The config file is named `popInf.config.json` and is located in this folder. See below for details:
+Associated with the Snakefile is a configuration file in json format. This file has 16 pieces of information needed to run the Snakefile. To run PopInf, go through all lines in the configuration file and make sure to change the content as specified.
+The config file is named `popInf.config.json` and is located in this folder. See below for details. We also provide an example our configuration file below:
 
 `popInf.config.json:`
 ```
@@ -145,12 +145,13 @@ The following section discusses how the run the sbatch script to run PopInf. The
 ```
 sbatch snakemake_PopInf_slurm.sh A
 ```
-
 NOTE: The `A` must be capitalized if analyzing the autosomes. If analyzing the X chromosome, remove the `A` and run the command as follows:
 ```
 sbatch snakemake_PopInf_slurm.sh
 ```
 
 ## The results of running PopInf
-After submitting `snakemake_PopInf_slurm.sh` PopInf will run. Once completed, PopInf will output PCA plots as well as an inferred population report. The PCA plots will provide a visual representation of how the unknown sample(s) compares to the reference panel. For each unknown sample, the inferred population reports will provide distances to each reference population's centroid, and inferred ancestry based on how close the sample is to each population. 
+After submitting `snakemake_PopInf_slurm.sh` PopInf will run. Once completed, PopInf will output PCA plots as well as an inferred population report. The PCA plots will provide a visual representation of how the unknown sample(s) compare(s) to the reference panel. For each unknown sample, the inferred population reports will provide distances to each reference population's centroid, and inferred ancestry based on how close the sample is to each population.
+
+We ran PopInf using 986 unrelated individuals from the 1000 Genomes consortium as our reference panel and 148 GTEx samples as our unknown panel. Our sample lists are provided in this folder, and our configuration file can be seen above. Additionally, we have provided the PCA plot and inferred population report that PopInf generated for the autosomes in this folder.
 
