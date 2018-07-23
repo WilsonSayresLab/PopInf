@@ -7,8 +7,8 @@ Below are steps for running PopInf. PopInf is incorporated into the workflow sys
 ## What you need to run PopInf
  1. Variants for a reference panel in VCF file format separated by chromosome.
  2. Variants for sample(s) of individuals with unknown or self-reported ancestry in VCF file format separated by chromosome.
- 3. Tab delimited file for the reference panel. This file must contain 3 columns: 1) the individual's sample name, and 2) sex information (i.e. male, female, unkown) and 3) population information for the corresponding individual.
- 4. Tab delemited file for the individuals with unknown or self-reported ancestry. This file must contain 3 columns: 1) the individual's sample name, and 2) sex information (i.e. male, female, unkown) and 3) population information for the corresponding individual (this column can be labeled "unknown" for this file).
+ 3. Sample information file for the reference panel. This file must contain 3 tab-delimited columns: 1) the individual's sample name, and 2) sex information (i.e. male, female, unkown) and 3) population information for the corresponding individual.
+ 4. Sample information file for the unknown samples. This file must contain 3 tab-delemited columns: 1) the individual's sample name, and 2) sex information (i.e. male, female, unkown) and 3) population information for the corresponding individual (this column can be labeled "unknown" for this file).
  5. Reference Genome file (.fa) used for mapping variants. Make sure there are accompanying index (.fai) and dictionary (.dict) files.
 
 ## Step 1: Set up your enviroment 
@@ -48,15 +48,15 @@ conda install -c r r-car
 ## Step 2: Prepare the reference panel
 See the readme file in the folder called "`Prep_Reference_Panel`".
 
-## Step 3: Prepare the unknown panel
-See the readme file in the folder called "`Prep_Reference_Panel`". 
+## Step 3: Prepare the unknown samples
+See the readme file in the folder called "`Prep_Unknown_Samples`". --Anagha, please change the folder name to `Prep_Unknown_Samples`
 
 ## Optional Step: Separate reference panel and unknown panel files by biological sex
-If you would like to analyze the biological sexes separately, see the readme file in the folder called "`Separate_Biological_Sex`" for instructions on how to separate the reference and unknown files by biological sexes. These separated files can then be run with PopInf.
+If you would like to analyze the biological sexes separately, see the readme file in the folder called "`Separate_Biological_Sex`" for instructions on how to separate the reference and unknown files by biological sexes. These separated files can then be run with PopInf. --Anagha, I am not sure this is needed. We are just highlighting the by chromosome analysis. Please delete this along with the folder"`Separate_Biological_Sex`". 
 
 ## Step 4: Edit the configuration file
-Associated with the Snakefile is a configuration file in json format. This file has 19 pieces of information needed to run the Snakefile.
-The config file is named `popInf.config.json` and is located in this folder. 
+Associated with the Snakefile is a configuration file in json format. This file has 19 pieces of information needed to run the Snakefile. To run PopInf, go through all lines in the configuration file and make sure to change the content as specified.
+The config file is named `popInf.config.json` and is located in this folder. See below for details: --Anagha, in this example, can you put the json file you used to run PopInf with the 1000 genomes reference and GTEx samples. 
 
 `popInf.config.json:`
 ```
@@ -76,121 +76,100 @@ The config file is named `popInf.config.json` and is located in this folder.
   "vcf_unknown_set_prefix": "unknown_panel_file_prefix",
   "vcf_unknown_set_suffix": "unknown_panel_file_suffix.recode.vcf",
   "chromosome": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22"],
-  "biological_sex_autosomes": "biological_sex",
+  "biological_sex_autosomes": "biological_sex", --Anagha, remove this from the json and snakefile. Also remove anything with {bio_sex} from the snakefile.
   
   "_comment_chrX": "This section of the .json file asks for information needed for the analysis of the X chromosome",
-  "ref_path_chrX": "/path/reference_genome_file.fa",
+  "ref_path_chrX": "/path/reference_genome_file.fa", --Anagha, the reference file should be exactly the same regardless if analyzing the X chromosome or autosomes. Please remove this and anywhere you use "ref_path_chrX" in the snakefile change to "ref_path".
   "vcf_ref_panel_path_X": "/path_to_chrX_reference_panel_file/",
   "vcf_ref_panel_file": "chrX_reference_panel_file.recode.vcf",
   "vcf_unknown_set_path_X": "/path_to_chrX_unknown_panel_file/",
   "vcf_unknown_set_file": "chrX_unknown_panel_file.recode.vcf",
-  "biological_sex_chrX": "biological_sex",
+  "biological_sex_chrX": "biological_sex", --Anagha, remove this from the json and snakefile. Also remove anything with {bio_sex} from the snakefile.
   "X_chr_coordinates": "/path/X_chromosome_regions_XTR_hg19.bed",
 }
 ```
-While editing the .json file, make sure that any white space or indentations are create by spaces, not tabs. If there are tabs present in this file, snakemake will run into the error of not being able to properly read the .json file. 
 
-### Providing the reference and unknown panel sample information
-Add the full path and file name of the reference panel sample information text file with the sample names, biological sex, and populations after `"ref_panel_pop_info_path": `. 
+While editing the .json file, make sure that any white space or indentations are create by spaces, not tabs. If there are tabs present in this file, snakemake will run into the error of not being able to properly read the .json file. -- Anagha, I am not sure what you mean by this statement. How about this as an edit:
 
-Add the full path and file name of the unknown panel sample information text file with the sample names, biological sex, and populations after `"unkn_panel_pop_info_path": `.
+After editing `popInf.config.json` make sure that this file has maintained proper json format. You can use The JSON Validator for example (https://jsonlint.com/).
 
-### Specifying the type of chromosome to be analyzed
-Specify whether the analysis is to be done on the autosomes or the X chromosome after `"Autosomes_Yes_or_No": `. If the autosomes are to be analyzed, type `"Y"`. If the X chromosome is to be analyzed, type `"N"`.
+Below, there are details on what to add or change in the configuration file.
 
-### Providing the information to analyze the autosomes
-Add the full path to and name of the reference genome file for the autosomes after `"ref_path": `. Make sure that this is in quotes (like in the above example).
+### Provide the reference and unknown panel sample information
+`"ref_panel_pop_info_path": ` Add the full path and file name of the sample information text file for the reference panel.
 
-Add the full path to the zipped reference panel VCF files that are separated by chromosome after `"vcf_ref_panel_path": `. Make sure the path has "/" at the end and is in quotes (like in the above example).
+`"unkn_panel_pop_info_path": ` Add the full path and file name of the sample information text file for the unknown samples.
 
-Add the part of the name of the reference VCF files that comes before the chr number after `"vcf_ref_panel_prefix": `. For example, if the reference VCF file for chromosome 1 is named `chr1_reference_panel.vcf.gz` then you would add `"chr"` to this part of the config file. Make sure that this is in quotes (like in the above example).
+### Specify the type of chromosome to be analyzed
+`"Autosomes_Yes_or_No": ` Specify whether analyzing the autosomes or X chromosome. If analyzing the autosomes, type `"Y"`. If analyzing the X chromosome, type `"N"`. 
 
-Add the part of the name of the reference VCF files that comes after the chr number after `"vcf_ref_panel_suffix": `. For example, if the reference VCF file for chromosome 1 is named `chr1_reference_panel.vcf.gz` then you would add `"_reference_panel.vcf.gz"` to this part of the config file. Make sure that this is in quotes (like in the above example).
+### Provide information about the reference file used for mapping variants
+`"ref_path": ` Add the full path to and name of the reference genome file.
 
-Add the full path to the zipped unknown panel VCF files that are separated by chromosome after `"vcf_unknown_set_path": `. Make sure the path has "/" at the end and is in quotes (like in the above example).
+### Additional information to provide if analyzing the autosomes
+`"vcf_ref_panel_path": ` Add the full path to the zipped reference panel VCF files that are separated by chromosome. Make sure the path has "/" at the end.
 
-Add the part of the name of the unknown VCF files that comes before the chr number after `"vcf_unknown_set_prefix": `. For example, if the unknown VCF file for chromosome 1 is named `chr1_unknown_panel.vcf.gz` then you would add `"chr"` to this part of the config file. Make sure that this is in quotes (like in the above example).
+`"vcf_ref_panel_prefix": ` Add the part of the name of the reference VCF files that comes before the chr number. For example, if the reference VCF file for chromosome 1 is named `chr1_reference_panel.vcf.gz` then you would add `"chr"` to this part of the config file. 
 
-Add the part of the name of the unknown VCF files that comes after the chr number after `"vcf_unknown_set_suffix": `. For example, if the unknown VCF file for chromosome 1 is named `chr1_unknown_panel.vcf.gz` then you would add `"_unknown_panel.vcf.gz"` to this part of the config file. Make sure that this is in quotes (like in the above example).
+`"vcf_ref_panel_suffix": ` Add the part of the name of the reference VCF files that comes after the chromosome number. For example, if the reference VCF file for chromosome 1 is named `chr1_reference_panel.vcf.gz` then you would add `"_reference_panel.vcf.gz"` to this the config file.
 
-You may leave `"chromosome": ` as is, unless you do not want to analyze all chromosomes. popInf has an option to analyze the X chromosome (separately from the autosomes) so the X chromosome is added here. If you are not interested in analyzing the X chromosome, just remove "X".
+`"vcf_unknown_set_path": ` Add the full path to the zipped unknown sample(s) VCF files that are separated by chromosome. Make sure the path has "/" at the end.
 
-Specify the biological sex you would like to analyze after `"biological_sex_autosomes": `. The following biological sexes could be specified: `"both"`, `"male"`, or `"female"`. Make sure that this is in quotes (like in the above example).
+`"vcf_unknown_set_prefix": ` Add the part of the name of the unknown VCF files that comes before the chromosome number. For example, if the unknown VCF file for chromosome 1 is named `chr1_unknown_panel.vcf.gz` then you would add `"chr"` to this part of the config file. 
 
-### Providing the information to analyze the X chromosome
-Add the full path to and name of the reference genome file for the X chromosome after `"ref_path_chrX": `. Make sure that this is in quotes (like in the above example).
+`"vcf_unknown_set_suffix": ` Add the part of the name of the unknown VCF files that comes after the chr number. For example, if the unknown VCF file for chromosome 1 is named `chr1_unknown_panel.vcf.gz` then you would add `"_unknown_panel.vcf.gz"` to the config file.
 
-Add the full path to the zipped reference panel VCF file for the X chromosome after `"vcf_ref_panel_path_X": `. Make sure the path has "/" at the end and is in quotes (like in the above example).
+`"chromosome": ` You may leave it as is, unless you do not want to analyze all chromosomes. PopInf has an option to analyze the X chromosome (separately from the autosomes) so the X chromosome is added here. If you are not interested in analyzing the X chromosome, just remove "X".
 
-Add the full name of the zipped reference panel VCF file for the X chromosome after `"vcf_ref_panel_file": `. Make sure that this is in quotes (like in the above example).
+Specify the biological sex you would like to analyze after `"biological_sex_autosomes": `. The following biological sexes could be specified: `"both"`, `"male"`, or `"female"`. Make sure that this is in quotes (like in the above example). --Anagha, I don't think this is needed here or in the snakefile. If the user just wants to analyze females, for example, they could just input an only females vcf into PopInf. Also I looked through the snakefile and `biological_sex_autosomes` and `{bio_sex}` are never actually used to do anything in any of the `shell:` commands in any of the rules. Please remove this paragraph once you address this comment.
 
-Add the full path to the zipped unknown panel VCF file for the X chromosome after `"vcf_unknown_set_path_X": `. Make sure the path has "/" at the end and is in quotes (like in the above example).
+### Additional information to provide if analyzing the X chromosome
+`"ref_path_chrX": ` Add the full path to and name of the reference genome file for the X chromosome. --Anagha, I don't understand why there are two different ref path options. Regardelss if we are analyzing the X chromosome or autosomes, the reference file should be the same. Can you change this in the config file and snakefile then remove this paragraph?
 
-Add the full name of the zipped unknown panel VCF file for the X chromosome after `"vcf_unknown_set_file": `. Make sure that this is in quotes (like in the above example).
+`"vcf_ref_panel_path_X": ` Add the full path to the zipped reference panel VCF file for the X chromosome. Make sure the path has "/" at the end.
 
-Specify the biological sex you would like to analyze after `"biological_sex_chrX": `. The following biological sexes could be specified: `"both"`, `"male"`, or `"female"`. Make sure that this is in quotes (like in the above example).
+`"vcf_ref_panel_file": ` Add the full name of the zipped reference panel VCF file for the X chromosome.
 
-Add the full path to and name of the file containing the X chromosome PARS regions coordinates and XTR region coordinates after `"X_chr_coordinates": `. The coordinates are provided in the file named `X_chromosome_regions_XTR_hg19.bed` and this file is located in this folder. Make sure that this is in quotes (like in the above example).
+`"vcf_unknown_set_path_X": ` Add the full path to the zipped unknown sample(s) VCF file for the X chromosome. Make sure the path has "/" at the.
 
-## Step 5: Running PopInf
+`"vcf_unknown_set_file": ` Add the full name of the zipped unknown sample(s) VCF file for the X chromosome. 
+
+Specify the biological sex you would like to analyze after `"biological_sex_chrX": `. The following biological sexes could be specified: `"both"`, `"male"`, or `"female"`. Make sure that this is in quotes (like in the above example). --Anagha, please see my previous comments on this. Please remove this once you address my comments.
+
+`"X_chr_coordinates": ` Add the full path to and name of the file containing the X chromosome PAR and XTR coordinates. The coordinates are provided in the file named `X_chromosome_regions_XTR_hg19.bed` and this file is located in this folder.
+
+## Step 5: Run PopInf
 This step will provide instructions on how to run PopInf. With our server, we chose to use an sbatch script to run PopInf. This script is provided in this folder if your wish to use this. However, depending on your server, you might need to run PopInf differently. All of the necessary scripts are provided in this folder.
 
-### Editing the .sh script
-Before running the sbatch script, some necessary edits need to be made to the scripts. These edits are specified both within the script and here by line number.
+### Edit the .sh script
+Before running the sbatch script, some necessary edits are needed. These edits are specified both within the script and here by line number.
 
 Line 7 - edit the email after `#SBATCH --mail-user= ` to be the email that you wish your slurm notification to be sent to
 
 Line 11 - edit the path to which all of the following scripts and files are located: (1) Snakefile, (2) snakemake_PopInf_slurm.sh, (3) popInf_environment.yaml, (4) popInf.config.json, (5) make_merge_list.py, (6) make_par.py, (7) pca_inferred_ancestry_report.R. These scripts and files are all provided in this folder. These scripts and files must all be located within the same directory. 
 
-Line 30 - edit the email to be the email that you wish your slurm notification to be sent to
+Line 30, 112 - edit the email to be the email that you wish your slurm notification to be sent to
 
+--Anagha, anything that has to deal with biological sex should be removed here and within the snakefile since nothing is actually done with biological sex. The only thing that we need the biological sex information for is plotting the pca's.
 Line 42 - make sure the biological sex in the stem name and merge list name matches the one in the .json file
 
-Line 50 - make sure the biological sex in the file names match the one in the .json file
-
-Line 58 - make sure the biological sex in the file names match the one in the .json file
-
-Line 69 - make sure the biological sex in the file names match the one in the .json file
-
-Line 76 - make sure the biological sex in the file names match the one in the .json file
-
-Lines 84 and 85 - make sure the biological sex in the file names match the one in the .json file
-
-Line 96 - make sure the biological sex in the file names match the one in the .json file
-
-Line 112 - edit the email to be the email that you wish your slurm notification to be sent to
-
-Line 120 - make sure the biological sex in the file names match the one in the .json file
-
-Line 128 - make sure the biological sex in the file names match the one in the .json file
-
-Lines 136 and 137 - make sure the biological sex in the file names match the one in the .json file
-
-Line 145 - make sure the biological sex in the file names match the one in the .json file
+Line 50, 58, 69, 76, 84, 85, 96, 120, 128, 136, 137, 145 - make sure the biological sex in the file names match the one in the .json file --Anagha, this should all be removed after you address my previous comment.
 
 ### Running the .sh script
 The following section discusses how the run the sbatch script to run PopInf. The script can be run differently depending on whether the autosomes or X chromosome is to be analyzed.
 
-#### For analyzing the autosomes, use the following commands to run the sbatch script:
+#### Use the following commands to run the sbatch script:
 ```
-cd /path/to/PopInf/scripts/
-source activate PopInf
+cd /path/to/PopInf/scripts/ --Anagha, the *.sh script specifies the directory to everything one needs to run PopInf, so this is not needed. Please remove this line.
+source activate PopInf --Anagha, the *.sh script activates the environment, so this is not needed. Please remove this line
 sbatch snakemake_PopInf_slurm.sh A
 ```
 
-The `A` must be capitalized for the autosomes to be correctly analyzed. 
-
-#### For analyzing the X chromosome, use the following commands to run the sbatch script:
+NOTE: The `A` must be capitalized if analyzing the autosomes. If analyzing the X chromosome, remove the `A` and run the command as follows:
 ```
-cd /path/to/PopInf/scripts/
-source activate PopInf
 sbatch snakemake_PopInf_slurm.sh
 ```
 
 ## The results of running PopInf
-After all of these steps are incomplete, PopInf will be finished running. The program will generate PCA plots as well as inferred population reports. The PCA plots will provide a visual representation of how your unknown panel compares to the reference panel. The inferred population reports will provide a tab delimited text file specifying the inferred population of a particular sample based on: 1 standard deviation radius for a known population cluster, 2 standard deviations radius for a known population cluster, 3 standard deviations radius for a known population cluster, and pair-wise comparisons between the centroids for all of the known clusters.
-
-
-
-
+After submitting `snakemake_PopInf_slurm.sh` PopInf will run. Once completed, PopInf will output PCA plots as well as an inferred population report. The PCA plots will provide a visual representation of how the unknown sample(s) compares to the reference panel. For each unknown sample, the inferred population reports will provide distances to each reference population's centroid, and inferred ancestry based on how close the sample is to each population. 
 
