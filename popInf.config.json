@@ -13,14 +13,11 @@
   "vcf_unknown_set_prefix": "chr",
   "vcf_unknown_set_suffix":"_unknown_panel_females.recode.vcf",
   "chromosome": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22"],
-  "biological_sex_autosomes": "females",
   
   "_comment_chrX": "This section of the .json file asks for information needed for the analysis of the X chromosome",
-  "ref_path_chrX":"/mnt/storage/SAYRES/REFERENCE_GENOMES/hs37d5/hs37d5.fa",
   "vcf_ref_panel_path_X":"/mnt/storage/SAYRES/PCA_tutorial/anagha_snakemake_3/files_separated_by_biological_sex/chrX/",
   "vcf_ref_panel_file":"chrX_reference_panel_females.recode.vcf",
   "vcf_unknown_set_path_X":"/mnt/storage/SAYRES/PCA_tutorial/anagha_snakemake_3/files_separated_by_biological_sex/chrX/",
   "vcf_unknown_set_file": "chrX_unknown_panel_females.recode.vcf",
-  "biological_sex_chrX": "females",
   "X_chr_coordinates": "/mnt/storage/SAYRES/PCA_tutorial/lists/X_chromosome_regions_XTR_hg19.bed",
 }
