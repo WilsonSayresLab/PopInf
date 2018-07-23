@@ -155,7 +155,7 @@ Line 42 - make sure the biological sex in the stem name and merge list name matc
 
 Line 50, 58, 69, 76, 84, 85, 96, 120, 128, 136, 137, 145 - make sure the biological sex in the file names match the one in the .json file --Anagha, this should all be removed after you address my previous comment.
 
-### Running the .sh script
+### Run the .sh script
 The following section discusses how the run the sbatch script to run PopInf. The script can be run differently depending on whether the autosomes or X chromosome is to be analyzed.
 
 #### Use the following commands to run the sbatch script:
