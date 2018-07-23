@@ -8,8 +8,11 @@
 #SBATCH -n 16
 #SBATCH -t 96:00:00
 
+# CHANGES NEEDED FOR EXECUTION:
+#	1. change the path to the location of the Snakefile and corresponding scripts
+#	2. change the name of the environment to the one you created
 cd /path/to/Snakefile
-source activate PopInf
+source activate environment
 
 echo "Checking whether the autosomes or the X chromosome are to be analyzed."
 echo ""
@@ -35,27 +38,20 @@ if [[ $1 = "A" ]]; then
 	echo ""
 		
 	# Create the merge list
-	# CHANGES NEEDED FOR EXECUTION:
-	# 	1. make sure the biological sex in the stem name matches the one in the .json file
-	#	2. make sure the biological sex in the merge list name also matches the one in the .json file
 	date
-	python mak_merge_list.py --path autosomes/merge/ --stem _[biological_sex]_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune --out merge_list_[biological_sex]
+	python mak_merge_list.py --path autosomes/merge/ --stem _reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune --out merge_list
 	date
 	echo ""
 	
 	# Merge the files
-	# CHANGES NEEDED FOR EXECUTION:
-	# 	1. make sure the biological sex in the file names match the one in the .json file
 	date
-	plink --file autosomes/merge/chr1_[biological_sex]_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune --merge-list merge_list_[biological_sex].txt --recode --out autosomes/merge/merge_all_chr_[biological_sex]_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune
+	plink --file autosomes/merge/chr1_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune --merge-list merge_list.txt --recode --out autosomes/merge/merge_all_chr_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune
 	date
 	echo ""
 	
 	# Edit the 6th column of the ped files
-	# CHANGES NEEDED FOR EXECUTION:
-	# 	1. make sure the biological sex in the file names match the one in the .json file
 	date
-	awk '{{$6 = "1"; print}}' autosomes/merge/merge_all_chr_[biological_sex]_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune.ped > autosomes/merge/merge_all_chr_[biological_sex]_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune_editColumn6.ped
+	awk '{{$6 = "1"; print}}' autosomes/merge/merge_all_chr_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune.ped > autosomes/merge/merge_all_chr_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune_editColumn6.ped
 	date
 	echo ""
 	
@@ -63,26 +59,20 @@ if [[ $1 = "A" ]]; then
 	echo ""
 		
 	# Make par file
-	# CHANGES NEEDED FOR EXECUTION:
-	# 	1. make sure the biological sex in the file names match the one in the .json file
 	date
-	python make_par.py --map autosomes/merge/merge_all_chr_[biological_sex]_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune.map --ped autosomes/merge/merge_all_chr_[biological_sex]_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune_editColumn6.ped --ev merge_all_chr_[biological_sex]_reference_panel_unknown_set_SNPs_no_missing_plink_LDprune --par merge_all_chr_[biological_sex]_reference_panel_unknown_set_SNPs_no_missing_plink_LDprune_par
+	python make_par.py --map autosomes/merge/merge_all_chr_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune.map --ped autosomes/merge/merge_all_chr_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune_editColumn6.ped --ev merge_all_chr_reference_panel_unknown_set_SNPs_no_missing_plink_LDprune --par merge_all_chr_reference_panel_unknown_set_SNPs_no_missing_plink_LDprune_par
 	date
 	
 	# Run smartpca
-	# CHANGES NEEDED FOR EXECUTION:
-	# 	1. make sure the biological sex in the file names match the one in the .json file
 	date
-	smartpca -p merge_all_chr_[biological_sex]_reference_panel_unknown_set_SNPs_no_missing_plink_LDprune_par_PCA.par
+	smartpca -p merge_all_chr_reference_panel_unknown_set_SNPs_no_missing_plink_LDprune_par_PCA.par
 	date
 	echo ""
 	
 	# Edit the evec files
-	# CHANGES NEEDED FOR EXECUTION:
-	# 	1. make sure the biological sex in the file names match the one in the .json file
 	date
-	awk '{{if($1 == "\t" ) {{print $2,"\t",$3,"\t",$4,"\t",$5,"\t",$6,"\t",$7,"\t",$8,"\t",$9,"\t",$10,"\t",$11,"\t",$12,"\t",$13,"\t"}} else {{print $1,"\t",$2,"\t",$3,"\t",$4,"\t",$5,"\t",$6,"\t",$7,"\t",$8,"\t",$9,"\t",$10,"\t",$11,"\t",$12,"\t"}}}}' merge_all_chr_[biological_sex]_reference_panel_unknown_set_SNPs_no_missing_plink_LDprune.evec > merge_all_chr_[biological_sex]_reference_panel_unknown_set_SNPs_no_missing_plink_LDprune_Fix.evec
-	awk '{gsub(/\.variant2/,""); gsub(/\.variant/,""); print}' merge_all_chr_[biological_sex]_reference_panel_unknown_set_SNPs_no_missing_plink_LDprune_Fix.evec > merge_all_chr_[biological_sex]_reference_panel_unknown_set_SNPs_no_missing_plink_LDprune_Fix2.evec
+	awk '{{if($1 == "\t" ) {{print $2,"\t",$3,"\t",$4,"\t",$5,"\t",$6,"\t",$7,"\t",$8,"\t",$9,"\t",$10,"\t",$11,"\t",$12,"\t",$13,"\t"}} else {{print $1,"\t",$2,"\t",$3,"\t",$4,"\t",$5,"\t",$6,"\t",$7,"\t",$8,"\t",$9,"\t",$10,"\t",$11,"\t",$12,"\t"}}}}' merge_all_chr_reference_panel_unknown_set_SNPs_no_missing_plink_LDprune.evec > merge_all_chr_reference_panel_unknown_set_SNPs_no_missing_plink_LDprune_Fix.evec
+	awk '{gsub(/\.variant2/,""); gsub(/\.variant/,""); print}' merge_all_chr_reference_panel_unknown_set_SNPs_no_missing_plink_LDprune_Fix.evec > merge_all_chr_reference_panel_unknown_set_SNPs_no_missing_plink_LDprune_Fix2.evec
 	date
 	echo ""
 
@@ -91,9 +81,10 @@ if [[ $1 = "A" ]]; then
 		
 	# Plot results and get inferred population report
 	# CHANGES NEEDED FOR EXECUTION:
-	# 	1. make sure the biological sex in the file names match the one in the .json file
+	#	1. Change the path to and file name of the reference panel samples list
+	#	2. Change the path to and file name of the unknown panel samples list
 	date
-	Rscript pca_inferred_ancestry_report.R merge_all_chr_[biological_sex]_reference_panel_unknown_set_SNPs_no_missing_plink_LDprune_Fix2.evec merge_all_chr_[biological_sex]_reference_panel_unknown_set_SNPs_no_missing_plink_LDprune.eval ThousandGenomesSamples_AdmxRm_SHORT.txt gtex_samples_SHORT.txt PCA_plots_all_autosomes_[biological_sex] autosomes_[biological_sex]_inferred_pop_report
+	Rscript pca_inferred_ancestry_report.R merge_all_chr_reference_panel_unknown_set_SNPs_no_missing_plink_LDprune_Fix2.evec merge_all_chr_reference_panel_unknown_set_SNPs_no_missing_plink_LDprune.eval /path/to/reference_panel_sample_list.txt /path/to/unknown_panel_sample_list.txt PCA_plots_all_autosomes autosomes_inferred_pop_report
 	date
 	
 	echo "Analysis of the autosomes is complete."
@@ -114,35 +105,30 @@ else
 	echo ""
 	
 	# Make par file
-	# CHANGES NEEDED FOR EXECUTION:
-	# 	1. make sure the biological sex in the file names match the one in the .json file
 	date
-	python make_par.py --map chrX/merge/chrX_[biological_sex]_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune.map --ped chrX/merge/chrX_[biological_sex]_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_editColumn6.ped --ev chrX/pca/chrX_[biological_sex]_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune --par chrX/pca/par/chrX_[biological_sex]_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_par
+	python make_par.py --map chrX/merge/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune.map --ped chrX/merge/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_editColumn6.ped --ev chrX/pca/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune --par chrX/pca/par/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_par
 	date
 	echo ""
 	
 	# Run smartpca
-	# CHANGES NEEDED FOR EXECUTION:
-	# 	1. make sure the biological sex in the file names match the one in the .json file
 	date
-	smartpca -p chrX/pca/par/chrX_[biological_sex]_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_par_PCA.par
+	smartpca -p chrX/pca/par/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_par_PCA.par
 	date
 	echo ""
 	
 	# Edit the evec files
-	# CHANGES NEEDED FOR EXECUTION:
-	# 	1. make sure the biological sex in the file names match the one in the .json file
 	date
-	awk '{{if($1 == "\t" ) {{print $2,"\t",$3,"\t",$4,"\t",$5,"\t",$6,"\t",$7,"\t",$8,"\t",$9,"\t",$10,"\t",$11,"\t",$12,"\t",$13,"\t"}} else {{print $1,"\t",$2,"\t",$3,"\t",$4,"\t",$5,"\t",$6,"\t",$7,"\t",$8,"\t",$9,"\t",$10,"\t",$11,"\t",$12,"\t"}}}}' chrX/pca/chrX_[biological_sex]_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune.evec > chrX/pca/chrX_[biological_sex]_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_Fix.evec
-	awk '{gsub(/\.variant2/,""); gsub(/\.variant/,""); print}' chrX/pca/chrX_[biological_sex]_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_Fix.evec > chrX/pca/chrX_[biological_sex]_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_Fix2.evec
+	awk '{{if($1 == "\t" ) {{print $2,"\t",$3,"\t",$4,"\t",$5,"\t",$6,"\t",$7,"\t",$8,"\t",$9,"\t",$10,"\t",$11,"\t",$12,"\t",$13,"\t"}} else {{print $1,"\t",$2,"\t",$3,"\t",$4,"\t",$5,"\t",$6,"\t",$7,"\t",$8,"\t",$9,"\t",$10,"\t",$11,"\t",$12,"\t"}}}}' chrX/pca/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune.evec > chrX/pca/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_Fix.evec
+	awk '{gsub(/\.variant2/,""); gsub(/\.variant/,""); print}' chrX/pca/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_Fix.evec > chrX/pca/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_Fix2.evec
 	date
 	echo ""
 	
 	# Plot results and get inferred population report
 	# CHANGES NEEDED FOR EXECUTION:
-	# 	1. make sure the biological sex in the file names match the one in the .json file
+	#	1. Change the path to and file name of the reference panel samples list
+	#	2. Change the path to and file name of the unknown panel samples list
 	date
-	Rscript pca_inferred_ancestry_report.R chrX/pca/chrX_[biological_sex]_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_Fix2.evec chrX/pca/chrX_[biological_sex]_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune.eval ThousandGenomesSamples_AdmxRm_SHORT.txt gtex_samples_SHORT.txt chrX/PCA_plots_chrX_[biological_sex] chrX/chrX_[biological_sex]_inferred_pop_report
+	Rscript pca_inferred_ancestry_report.R chrX/pca/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_Fix2.evec chrX/pca/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune.eval /path/to/reference_panel_sample_list.txt /path/to/unknown_panel_sample_list.txt chrX/PCA_plots_chrX chrX/chrX_inferred_pop_report
 	date
 	
 	echo ""	
