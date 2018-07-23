@@ -1,4 +1,4 @@
-# This snakemake file will separate analysis for the autosomes and the X chromosome separately in two blocks.
+# This snakemake file will analyze the autosomes and the X chromosome separately in two blocks.
 # The first block will be for the autosomes that have been separated by chromosome and the second block will be for the 
 # X chromosome. 
 
