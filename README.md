@@ -2,7 +2,7 @@
 PopInf is a method to infer the major population (or populations) ancestry of a sample or set of samples.
 
 # Running PopInf 
-Below are steps for running PopInf. PopInf is incorporated into the workflow system snakemake. All necessary files and scripts are in this directory. There are instructions on preparing the reference panel in a folder called "`Prep_Reference_Panel`"
+Below are steps for running PopInf. PopInf is incorporated into the workflow system snakemake. All necessary files and scripts are in this directory. There are instructions on preparing the reference panel in a folder called "`Prep_Reference_Panel`".
 
 ## What you need to run PopInf
  1. Variants for a reference panel in VCF file format separated by chromosome.
@@ -49,48 +49,38 @@ conda install -c r r-car
 See the readme file in the folder called "`Prep_Reference_Panel`".
 
 ## Step 3: Prepare the unknown samples
-See the readme file in the folder called "`Prep_Unknown_Samples`". --Anagha, please change the folder name to `Prep_Unknown_Samples`
-
-## Optional Step: Separate reference panel and unknown panel files by biological sex
-If you would like to analyze the biological sexes separately, see the readme file in the folder called "`Separate_Biological_Sex`" for instructions on how to separate the reference and unknown files by biological sexes. These separated files can then be run with PopInf. --Anagha, I am not sure this is needed. We are just highlighting the by chromosome analysis. Please delete this along with the folder"`Separate_Biological_Sex`". 
+See the readme file in the folder called "`Prep_Unknown_Samples`".
 
 ## Step 4: Edit the configuration file
 Associated with the Snakefile is a configuration file in json format. This file has 19 pieces of information needed to run the Snakefile. To run PopInf, go through all lines in the configuration file and make sure to change the content as specified.
-The config file is named `popInf.config.json` and is located in this folder. See below for details: --Anagha, in this example, can you put the json file you used to run PopInf with the 1000 genomes reference and GTEx samples. 
+The config file is named `popInf.config.json` and is located in this folder. See below for details:
 
 `popInf.config.json:`
 ```
 {
   "_comment_sample_info": "This section of the .json file asks for sample information",
-  "ref_panel_pop_info_path": "/path/reference_panel_samples.txt",
-  "unkn_panel_pop_info_path": "/path/unknown_panel_samples.txt",
-  
-  "Autosomes_Yes_or_No": "Y",
+  "ref_panel_pop_info_path":"/mnt/storage/SAYRES/PCA_tutorial/snakemake/ThousandGenomesSamples_AdmxRm_SHORT.txt",
+  "unkn_panel_pop_info_path":"/mnt/storage/SAYRES/PCA_tutorial/snakemake/gtex_samples_SHORT.txt",
   
   "_comment_autosomes": "This section of the .json file asks for information needed for the autosomes if they are to be analyzed",
-  "ref_path": "/path/reference_genome_file.fa",
-  "vcf_ref_panel_path": "/path_to_reference_panel_files/",
-  "vcf_ref_panel_prefix": "reference_panel_file_prefix",
-  "vcf_ref_panel_suffix": "reference_panel_file_suffix.recode.vcf",
-  "vcf_unknown_set_path": "/path_to_unknown_panel_files/",
-  "vcf_unknown_set_prefix": "unknown_panel_file_prefix",
-  "vcf_unknown_set_suffix": "unknown_panel_file_suffix.recode.vcf",
+  "Autosomes_Yes_or_No":"N",
+  "ref_path":"/mnt/storage/SAYRES/REFERENCE_GENOMES/hs37d5/hs37d5.fa",
+  "vcf_ref_panel_path":"/mnt/storage/SAYRES/PCA_tutorial/snakemake/autosomes/",
+  "vcf_ref_panel_prefix":"chr",
+  "vcf_ref_panel_suffix":"_reference_panel.recode.vcf",
+  "vcf_unknown_set_path":"/mnt/storage/SAYRES/PCA_tutorial/snakemake/autosomes/",
+  "vcf_unknown_set_prefix": "chr",
+  "vcf_unknown_set_suffix":"_unknown_panel.recode.vcf",
   "chromosome": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22"],
-  "biological_sex_autosomes": "biological_sex", --Anagha, remove this from the json and snakefile. Also remove anything with {bio_sex} from the snakefile.
   
   "_comment_chrX": "This section of the .json file asks for information needed for the analysis of the X chromosome",
-  "ref_path_chrX": "/path/reference_genome_file.fa", --Anagha, the reference file should be exactly the same regardless if analyzing the X chromosome or autosomes. Please remove this and anywhere you use "ref_path_chrX" in the snakefile change to "ref_path".
-  "vcf_ref_panel_path_X": "/path_to_chrX_reference_panel_file/",
-  "vcf_ref_panel_file": "chrX_reference_panel_file.recode.vcf",
-  "vcf_unknown_set_path_X": "/path_to_chrX_unknown_panel_file/",
-  "vcf_unknown_set_file": "chrX_unknown_panel_file.recode.vcf",
-  "biological_sex_chrX": "biological_sex", --Anagha, remove this from the json and snakefile. Also remove anything with {bio_sex} from the snakefile.
-  "X_chr_coordinates": "/path/X_chromosome_regions_XTR_hg19.bed",
+  "vcf_ref_panel_path_X":"/mnt/storage/SAYRES/PCA_tutorial/snakemake/chrX/",
+  "vcf_ref_panel_file":"chrX_reference_panel_females.recode.vcf",
+  "vcf_unknown_set_path_X":"/mnt/storage/SAYRES/PCA_tutorial/snakemake/chrX/",
+  "vcf_unknown_set_file": "chrX_unknown_panel.recode.vcf",
+  "X_chr_coordinates": "/mnt/storage/SAYRES/PCA_tutorial/lists/X_chromosome_regions_XTR_hg19.bed",
 }
 ```
-
-While editing the .json file, make sure that any white space or indentations are create by spaces, not tabs. If there are tabs present in this file, snakemake will run into the error of not being able to properly read the .json file. -- Anagha, I am not sure what you mean by this statement. How about this as an edit:
-
 After editing `popInf.config.json` make sure that this file has maintained proper json format. You can use The JSON Validator for example (https://jsonlint.com/).
 
 Below, there are details on what to add or change in the configuration file.
@@ -119,13 +109,9 @@ Below, there are details on what to add or change in the configuration file.
 
 `"vcf_unknown_set_suffix": ` Add the part of the name of the unknown VCF files that comes after the chr number. For example, if the unknown VCF file for chromosome 1 is named `chr1_unknown_panel.vcf.gz` then you would add `"_unknown_panel.vcf.gz"` to the config file.
 
-`"chromosome": ` You may leave it as is, unless you do not want to analyze all chromosomes. PopInf has an option to analyze the X chromosome (separately from the autosomes) so the X chromosome is added here. If you are not interested in analyzing the X chromosome, just remove "X".
-
-Specify the biological sex you would like to analyze after `"biological_sex_autosomes": `. The following biological sexes could be specified: `"both"`, `"male"`, or `"female"`. Make sure that this is in quotes (like in the above example). --Anagha, I don't think this is needed here or in the snakefile. If the user just wants to analyze females, for example, they could just input an only females vcf into PopInf. Also I looked through the snakefile and `biological_sex_autosomes` and `{bio_sex}` are never actually used to do anything in any of the `shell:` commands in any of the rules. Please remove this paragraph once you address this comment.
+`"chromosome": ` You may leave it as is, unless you do not want to analyze all chromosomes. PopInf has an option to analyze the X chromosome (separately from the autosomes) so the X chromosome is not added here. If you are interested in analyzing the X chromosome, see below.
 
 ### Additional information to provide if analyzing the X chromosome
-`"ref_path_chrX": ` Add the full path to and name of the reference genome file for the X chromosome. --Anagha, I don't understand why there are two different ref path options. Regardelss if we are analyzing the X chromosome or autosomes, the reference file should be the same. Can you change this in the config file and snakefile then remove this paragraph?
-
 `"vcf_ref_panel_path_X": ` Add the full path to the zipped reference panel VCF file for the X chromosome. Make sure the path has "/" at the end.
 
 `"vcf_ref_panel_file": ` Add the full name of the zipped reference panel VCF file for the X chromosome.
@@ -133,8 +119,6 @@ Specify the biological sex you would like to analyze after `"biological_sex_auto
 `"vcf_unknown_set_path_X": ` Add the full path to the zipped unknown sample(s) VCF file for the X chromosome. Make sure the path has "/" at the.
 
 `"vcf_unknown_set_file": ` Add the full name of the zipped unknown sample(s) VCF file for the X chromosome. 
-
-Specify the biological sex you would like to analyze after `"biological_sex_chrX": `. The following biological sexes could be specified: `"both"`, `"male"`, or `"female"`. Make sure that this is in quotes (like in the above example). --Anagha, please see my previous comments on this. Please remove this once you address my comments.
 
 `"X_chr_coordinates": ` Add the full path to and name of the file containing the X chromosome PAR and XTR coordinates. The coordinates are provided in the file named `X_chromosome_regions_XTR_hg19.bed` and this file is located in this folder.
 
@@ -144,24 +128,21 @@ This step will provide instructions on how to run PopInf. With our server, we ch
 ### Edit the .sh script
 Before running the sbatch script, some necessary edits are needed. These edits are specified both within the script and here by line number.
 
-Line 7 - edit the email after `#SBATCH --mail-user= ` to be the email that you wish your slurm notification to be sent to
+Line 7 - edit the email after `#SBATCH --mail-user= ` to be the email that you wish your slurm notification to be sent to.
 
-Line 11 - edit the path to which all of the following scripts and files are located: (1) Snakefile, (2) snakemake_PopInf_slurm.sh, (3) popInf_environment.yaml, (4) popInf.config.json, (5) make_merge_list.py, (6) make_par.py, (7) pca_inferred_ancestry_report.R. These scripts and files are all provided in this folder. These scripts and files must all be located within the same directory. 
+Line 14 - edit the path to which all of the following scripts and files are located: (1) Snakefile, (2) snakemake_PopInf_slurm.sh, (3) popInf_environment.yaml, (4) popInf.config.json, (5) make_merge_list.py, (6) make_par.py, (7) pca_inferred_ancestry_report.R. These scripts and files are all provided in this folder. These scripts and files must all be located within the same directory.
 
-Line 30, 112 - edit the email to be the email that you wish your slurm notification to be sent to
+Line 15 - edit the name of the environment you created.
 
---Anagha, anything that has to deal with biological sex should be removed here and within the snakefile since nothing is actually done with biological sex. The only thing that we need the biological sex information for is plotting the pca's.
-Line 42 - make sure the biological sex in the stem name and merge list name matches the one in the .json file
+Line 33, 103 - edit the email to be the email that you wish your slurm notification to be sent to.
 
-Line 50, 58, 69, 76, 84, 85, 96, 120, 128, 136, 137, 145 - make sure the biological sex in the file names match the one in the .json file --Anagha, this should all be removed after you address my previous comment.
+Line 87, 131 - edit the paths to and file names of the reference panel sample list and the unknown panel sample list.
 
 ### Run the .sh script
 The following section discusses how the run the sbatch script to run PopInf. The script can be run differently depending on whether the autosomes or X chromosome is to be analyzed.
 
 #### Use the following commands to run the sbatch script:
 ```
-cd /path/to/PopInf/scripts/ --Anagha, the *.sh script specifies the directory to everything one needs to run PopInf, so this is not needed. Please remove this line.
-source activate PopInf --Anagha, the *.sh script activates the environment, so this is not needed. Please remove this line
 sbatch snakemake_PopInf_slurm.sh A
 ```
 
