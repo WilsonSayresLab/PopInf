@@ -1,4 +1,4 @@
-# Prepare Referece Panel 
+# Prepare Reference Panel 
 This document will guide you through preparing your reference panel VCF (variant call format) files for input into PopInf. In this tutorial, we will use a subset of the 1000 Genomes Release 3 whole genome sequence data. However, PopInf can take any VCF files with individuals from any population or any genomic data set. If you would like to use different populations in your reference panel, you can do so. If you are making your own reference panel, you do not need to follow this readme. Just make sure your vcf files are separated by chromosome. 
 
 ## What you need to prepare the reference panel 
@@ -22,13 +22,13 @@ If your VCF files for the reference panel are not already separated by chromosom
 vcftools --gzvcf /path/to/reference_panel_VCF.vcf.gz --chr [chromosome_number] --recode --out /path/to/reference_panel_VCF_chr[chromosome_number]
 ```
 
-## Step 1: Set up your enviroment 
-popInf and the refecence panel set up use a variety of programs. We will set up a conda environment to manage all necessary packages and programs. 
+## Step 1: Set up your environment 
+PopInf and the reference panel set up use a variety of programs. We will set up a conda environment to manage all necessary packages and programs. 
 
 ### Install Anaconda or Miniconda
 First, you will have to install Anaconda or Miniconda. Please refer to Conda's documentation for steps on how to install conda. See: https://conda.io/docs/index.html
 
-### Create the enviroment
+### Create the environment
 You can name your environment what ever you would like. We named this environment 'popInf' and we will use this environment for all analyses. 
 
 Create conda environment called `popInf`: \
