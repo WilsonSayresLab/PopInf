@@ -80,7 +80,7 @@ if config["Autosomes_Yes_or_No"]=="Y":
 		params:
 			 chr_num = "{chrm}"
 		shell: 
-			"plink --file autosomes/merge/chr{params.chr_num}_reference_panel_unknown_set_SNPs_merge_no_missing_plink --indep-pairwise 50 10 0.1 --recode --out autosomes/merge/chr{params.chr_num}_{params.bio_sex}_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune"
+			"plink --file autosomes/merge/chr{params.chr_num}_reference_panel_unknown_set_SNPs_merge_no_missing_plink --indep-pairwise 50 10 0.1 --recode --out autosomes/merge/chr{params.chr_num}_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune"
 		
 # PART 2: X CHROMOSOME		
 else:
@@ -161,7 +161,7 @@ else:
 			ref_unk_map_prune = "chrX/merge/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune.map",
 			ref_unk_ped_prune = "chrX/merge/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune.ped"
 		shell:
-			"plink --file chrX/merge/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink --ld-xchr 1 --recode --out chrX/merge/chrX_{params.biological_sex}_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune"
+			"plink --file chrX/merge/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink --ld-xchr 1 --recode --out chrX/merge/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune"
 
 	# Edit the 6th column of the .ped file
 	rule edit_ped_file:
