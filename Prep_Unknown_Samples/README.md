@@ -22,6 +22,6 @@ vcftools --gzvcf /path/to/unknown_panel_VCF.vcf.gz --chr [chromosome_number] --r
 ```
 
 ## Step 3: Prepare the sample information text file
-In order to successfully run PopInf, you must have a text file containing the sample information for the unknown panel. The first column must specify the sample names. The second column must specify the biological sex of each sample. Finally, the third column must specify the population. Since this is the unknown panel, "UNK" will be acceptable in this column.
+To successfully run PopInf, you must have a text file containing the sample information for the unknown panel. The first column must specify the sample names. The second column must specify the biological sex of each sample. Finally, the third column must specify the population. Since this is the unknown panel, "UNK" will be acceptable in this column.
 
-Once all of these steps are complete, the unknown panel files are prepped and ready to be used in PopInf.
+Once these steps are complete, the unknown panel files are prepped and ready to be used in PopInf.
