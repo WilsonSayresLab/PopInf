@@ -7,31 +7,31 @@ Below are steps for running PopInf. PopInf is incorporated into the workflow sys
 ## What you need to run PopInf
  1. Variants for a reference panel in VCF file format separated by chromosome.
  2. Variants for sample(s) of individuals with unknown or self-reported ancestry in VCF file format separated by chromosome.
- 3. Sample information file for the reference panel. This file must contain 3 tab-delimited columns: 1) the individual's sample name, and 2) sex information (i.e. male, female, unkown) and 3) population information for the corresponding individual. Our example for this file is provided in this folder and is called `ThousandGenomesSamples_AdmxRm_SHORT.txt`.
- 4. Sample information file for the unknown samples. This file must contain 3 tab-delemited columns: 1) the individual's sample name, and 2) sex information (i.e. male, female, unkown) and 3) population information for the corresponding individual (this column can be labeled "unknown" for this file). Our example for this file is provided in this folder and is called `gtex_samples_SHORT.txt`.
+ 3. Sample information file for the reference panel. This file must contain 3 tab-delimited columns: 1) the individual's sample name, and 2) sex information (i.e. male, female, unknown) and 3) population information for the corresponding individual. Our example for this file is provided in this folder and is called `ThousandGenomesSamples_AdmxRm_SHORT.txt`.
+ 4. Sample information file for the unknown samples. This file must contain 3 tab-delimited columns: 1) the individual's sample name, and 2) sex information (i.e. male, female, unknown) and 3) population information for the corresponding individual (this column can be labeled "unknown" for this file). Our example for this file is provided in this folder and is called `gtex_samples_SHORT.txt`.
  5. Reference Genome file (.fa) used for mapping variants. Make sure there are accompanying index (.fai) and dictionary (.dict) files.
 
-## Step 1: Set up your enviroment 
+## Step 1: Set up your environment 
 PopInf uses a variety of programs. We will set up a conda environment to manage all necessary packages and programs. 
 
 ### Install Anaconda or Miniconda
 First, you will have to install Anaconda or Miniconda. Please refer to Conda's documentation for steps on how to install conda. See: https://conda.io/docs/index.html
 
-### Create the enviroment
-You can name your environment what ever you would like. We named this environment 'popInf' and we will use this environment for all analyses. 
+### Create the environment
+You can name your environment whatever you would like. We named this environment 'PopInf' and we will use this environment for all analyses. 
 
-Create conda environment called `popInf`: \
-`conda env create --name popInf --file popInf_environment.yaml`
+Create conda environment called `PopInf`: \
+`conda env create --name PopInf --file popInf_environment.yaml`
 
 The `popInf_environment.yaml` environment file is located in this folder.
 
 You will need to activate the environment when running scripts or commands and deactivate the environment when you are done. 
 
-To activate `popInf` environment: \
-`source activate popInf` 
+To activate the `PopInf` environment: \
+`source activate PopInf` 
 
-To deactivate `popInf` environment: \
-`source deactivate popInf`
+To deactivate the `PopInf` environment: \
+`source deactivate PopInf`
 
 ### Add additional programs to the environment
 To use GATK in the conda environment, you must register it. After activating the environment, type the following into the command line: \
@@ -59,24 +59,24 @@ The config file is named `popInf.config.json` and is located in this folder. See
 ```
 {
   "_comment_sample_info": "This section of the .json file asks for sample information",
-  "ref_panel_pop_info_path":"/mnt/storage/SAYRES/PCA_tutorial/snakemake/ThousandGenomesSamples_AdmxRm_SHORT.txt",
-  "unkn_panel_pop_info_path":"/mnt/storage/SAYRES/PCA_tutorial/snakemake/gtex_samples_SHORT.txt",
+  "ref_panel_pop_info_path": "/mnt/storage/SAYRES/PCA_tutorial/snakemake/ThousandGenomesSamples_AdmxRm_SHORT.txt",
+  "unkn_panel_pop_info_path": "/mnt/storage/SAYRES/PCA_tutorial/snakemake/gtex_samples_SHORT.txt",
   
   "_comment_autosomes": "This section of the .json file asks for information needed for the autosomes if they are to be analyzed",
-  "Autosomes_Yes_or_No":"N",
-  "ref_path":"/mnt/storage/SAYRES/REFERENCE_GENOMES/hs37d5/hs37d5.fa",
-  "vcf_ref_panel_path":"/mnt/storage/SAYRES/PCA_tutorial/snakemake/autosomes/",
-  "vcf_ref_panel_prefix":"chr",
-  "vcf_ref_panel_suffix":"_reference_panel.recode.vcf",
-  "vcf_unknown_set_path":"/mnt/storage/SAYRES/PCA_tutorial/snakemake/autosomes/",
+  "Autosomes_Yes_or_No": "N",
+  "ref_path": "/mnt/storage/SAYRES/REFERENCE_GENOMES/hs37d5/hs37d5.fa",
+  "vcf_ref_panel_path": "/mnt/storage/SAYRES/PCA_tutorial/snakemake/autosomes/",
+  "vcf_ref_panel_prefix": "chr",
+  "vcf_ref_panel_suffix": "_reference_panel.recode.vcf",
+  "vcf_unknown_set_path": "/mnt/storage/SAYRES/PCA_tutorial/snakemake/autosomes/",
   "vcf_unknown_set_prefix": "chr",
-  "vcf_unknown_set_suffix":"_unknown_panel.recode.vcf",
+  "vcf_unknown_set_suffix": "_unknown_panel.recode.vcf",
   "chromosome": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22"],
   
   "_comment_chrX": "This section of the .json file asks for information needed for the analysis of the X chromosome",
-  "vcf_ref_panel_path_X":"/mnt/storage/SAYRES/PCA_tutorial/snakemake/chrX/",
-  "vcf_ref_panel_file":"chrX_reference_panel_females.recode.vcf",
-  "vcf_unknown_set_path_X":"/mnt/storage/SAYRES/PCA_tutorial/snakemake/chrX/",
+  "vcf_ref_panel_path_X": "/mnt/storage/SAYRES/PCA_tutorial/snakemake/chrX/",
+  "vcf_ref_panel_file": "chrX_reference_panel_females.recode.vcf",
+  "vcf_unknown_set_path_X": "/mnt/storage/SAYRES/PCA_tutorial/snakemake/chrX/",
   "vcf_unknown_set_file": "chrX_unknown_panel.recode.vcf",
   "X_chr_coordinates": "/mnt/storage/SAYRES/PCA_tutorial/lists/X_chromosome_regions_XTR_hg19.bed",
 }
@@ -123,7 +123,7 @@ Below, there are details on what to add or change in the configuration file.
 `"X_chr_coordinates": ` Add the full path to and name of the file containing the X chromosome PAR and XTR coordinates. The coordinates are provided in the file named `X_chromosome_regions_XTR_hg19.bed` and this file is located in this folder.
 
 ## Step 5: Run PopInf
-This step will provide instructions on how to run PopInf. With our server, we chose to use an sbatch script to run PopInf. This script is provided in this folder if your wish to use this. However, depending on your server, you might need to run PopInf differently. All of the necessary scripts are provided in this folder.
+This step will provide instructions on how to run PopInf. With our server, we chose to use an sbatch script to run PopInf. This script is provided in this folder if your wish to use this. However, depending on your server, you might need to run PopInf differently. All the necessary scripts are provided in this folder.
 
 ### Edit the .sh script
 Before running the sbatch script, some necessary edits are needed. These edits are specified both within the script and here by line number.
@@ -154,4 +154,3 @@ sbatch snakemake_PopInf_slurm.sh
 After submitting `snakemake_PopInf_slurm.sh` PopInf will run. Once completed, PopInf will output PCA plots as well as an inferred population report. The PCA plots will provide a visual representation of how the unknown sample(s) compare(s) to the reference panel. For each unknown sample, the inferred population reports will provide distances to each reference population's centroid, and inferred ancestry based on how close the sample is to each population.
 
 We ran PopInf using 986 unrelated individuals from the 1000 Genomes consortium as our reference panel and 148 GTEx samples as our unknown panel. Our sample lists are provided in this folder, and our configuration file can be seen above. Additionally, we have provided the PCA plot and inferred population report that PopInf generated for the autosomes in this folder.
-
