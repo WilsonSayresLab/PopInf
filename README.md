@@ -48,8 +48,10 @@ conda install -c r r-car
 ## Step 2: Prepare the reference panel
 See the readme file in the folder called "`Prep_Reference_Panel`".
 
+
 ## Step 3: Prepare the unknown samples
 See the readme file in the folder called "`Prep_Unknown_Samples`".
+
 
 ## Step 4: Edit the configuration file
 Associated with the Snakefile is a configuration file in json format. This file has 16 pieces of information needed to run the Snakefile. To run PopInf, go through all lines in the configuration file and make sure to change the content as specified.

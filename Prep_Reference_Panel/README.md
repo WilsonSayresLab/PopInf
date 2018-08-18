@@ -25,11 +25,13 @@ vcftools --gzvcf /path/to/reference_panel_VCF.vcf.gz --chr [chromosome_number] -
 ## Step 1: Set up your environment 
 PopInf and the reference panel set up use a variety of programs. We will set up a conda environment to manage all necessary packages and programs. 
 
+
 ### Install Anaconda or Miniconda
 First, you will have to install Anaconda or Miniconda. Please refer to Conda's documentation for steps on how to install conda. See: https://conda.io/docs/index.html
 
 ### Create the environment
 You can name your environment whatever you would like. We named this environment 'PopInf' and we will use this environment for all analyses. 
+
 
 Create conda environment called `PopInf`: \
 `conda env create --name PopInf --file popInf_environment.yaml`
@@ -57,6 +59,7 @@ There is a snakefile in this folder with the commands to prepare the reference p
 
 ### Edit configuration file
 Associated with the `snakefile` is a configuration file in json format. This file has 3 pieces of information needed to run the snakefile.
+
 The config file is named `prep_ref.config.json` and is located in this folder. \
 `prep_ref.config.json`:
 
@@ -81,8 +84,8 @@ Add the name (and full path) of the individuals you want to have in your referen
 
 You may leave `"chromosome": ` as is, unless you do not want to analyze all chromosomes. PopInf has an option to analyze the X chromosome (separately from the autosomes) so the X chromosome is added here. If you are not interested in analyzing the X chromosome, just remove "X"
 
-### Run snakemake
-You can submit the snakefile as a job on your cluster. See the "Cluster execution" section of snakemake documentation (https://snakemake.readthedocs.io/en/stable/tutorial/additional_features.html)
+### Run Snakemake
+You can submit the Snakefile as a job on your cluster. See the "Cluster execution" section of snakemake documentation (https://snakemake.readthedocs.io/en/stable/tutorial/additional_features.html)
 
 NOTE: The configuration file and Snakefile must be in the same directory.
 
@@ -93,6 +96,8 @@ snakemake -j 15 --cluster "sbatch -n 2 -t 96:00:00"
 ```
 
 After snakemake has completed, you can move onto running PopInf. Make sure the vcf file for the samples with unknown ancestry are also separated by chromosome.
+
+
 
 
 
