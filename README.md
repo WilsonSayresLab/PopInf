@@ -46,11 +46,11 @@ conda install -c r r-car
 ```
 
 ## Step 2: Prepare the reference panel
-See the readme file in the folder called "`Prep_Reference_Panel`".
+See the readme file in the folder called "`Reference_Panel`".
 
 
 ## Step 3: Prepare the unknown samples
-See the readme file in the folder called "`Prep_Unknown_Samples`".
+See the readme file in the folder called "`Unknown_Samples`".
 
 
 ## Step 4: Edit the configuration file
@@ -61,7 +61,7 @@ The config file is named `popInf.config.json` and is located in this folder. See
 ```
 {
   "_comment_sample_info": "This section of the .json file asks for sample information",
-  "ref_panel_pop_info_path": "/mnt/storage/SAYRES/PCA_tutorial/snakemake/ThousandGenomesSamples_AdmxRm_SHORT.txt",
+  "ref_panel_pop_info_path": "/PopInf/sample_information/ThousandGenomesSamples_AdmxRm_SHORT.txt",
   "unkn_panel_pop_info_path": "/mnt/storage/SAYRES/PCA_tutorial/snakemake/gtex_samples_SHORT.txt",
   
   "_comment_autosomes": "This section of the .json file asks for information needed for the autosomes if they are to be analyzed",
