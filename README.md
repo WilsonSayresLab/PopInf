@@ -61,16 +61,16 @@ The config file is named `popInf.config.json` and is located in this folder. See
 ```
 {
   "_comment_sample_info": "This section of the .json file asks for sample information",
-  "ref_panel_pop_info_path": "/PopInf/sample_information/ThousandGenomesSamples_AdmxRm_SHORT.txt",
-  "unkn_panel_pop_info_path": "/mnt/storage/SAYRES/PCA_tutorial/snakemake/gtex_samples_SHORT.txt",
+  "ref_panel_pop_info_path": "/PopInf/Sample_Information/ThousandGenomesSamples_AdmxRm.txt",
+  "unkn_panel_pop_info_path": "/PopInf/Sample_Information/GTExSamples.txt",
   
   "_comment_autosomes": "This section of the .json file asks for information needed for the autosomes if they are to be analyzed",
   "Autosomes_Yes_or_No": "N",
-  "ref_path": "/mnt/storage/SAYRES/REFERENCE_GENOMES/hs37d5/hs37d5.fa",
-  "vcf_ref_panel_path": "/mnt/storage/SAYRES/PCA_tutorial/snakemake/autosomes/",
+  "ref_path": "/PopInf/Reference_Genome/hs37d5.fa",
+  "vcf_ref_panel_path": "/PopInf/Reference_Panel/autosomes/",
   "vcf_ref_panel_prefix": "chr",
   "vcf_ref_panel_suffix": "_reference_panel.recode.vcf",
-  "vcf_unknown_set_path": "/mnt/storage/SAYRES/PCA_tutorial/snakemake/autosomes/",
+  "vcf_unknown_set_path": "/PopInf/Unknown_Samples/autosomes/",
   "vcf_unknown_set_prefix": "chr",
   "vcf_unknown_set_suffix": "_unknown_panel.recode.vcf",
   "chromosome": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22"],
