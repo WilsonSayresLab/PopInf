@@ -2,7 +2,7 @@
 PopInf is a method to infer the major population (or populations) ancestry of a sample or set of samples.
 
 # Running PopInf 
-Below are steps for running PopInf. PopInf is incorporated into the workflow system snakemake. All necessary files and scripts are in this directory. There are instructions on preparing the reference panel in a folder called "`Prep_Reference_Panel`".
+Below are steps for running PopInf. PopInf is incorporated into the workflow system snakemake. All necessary files and scripts are in this directory. There are instructions on preparing the reference panel in a folder called "`Reference_Panel`". There are also instructions on preparing the unknown samples in a folder called "`Unknown_Samples`".
 
 ## What you need to run PopInf
  1. Variants for a reference panel in VCF file format separated by chromosome.
@@ -67,20 +67,20 @@ The config file is named `popInf.config.json` and is located in this folder. See
   "_comment_autosomes": "This section of the .json file asks for information needed for the autosomes if they are to be analyzed",
   "Autosomes_Yes_or_No": "N",
   "ref_path": "/PopInf/Reference_Genome/hs37d5.fa",
-  "vcf_ref_panel_path": "/PopInf/Reference_Panel/autosomes/",
+  "vcf_ref_panel_path": "/PopInf/Reference_Panel/",
   "vcf_ref_panel_prefix": "chr",
   "vcf_ref_panel_suffix": "_reference_panel.recode.vcf",
-  "vcf_unknown_set_path": "/PopInf/Unknown_Samples/autosomes/",
+  "vcf_unknown_set_path": "/PopInf/Unknown_Samples/",
   "vcf_unknown_set_prefix": "chr",
   "vcf_unknown_set_suffix": "_unknown_panel.recode.vcf",
   "chromosome": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22"],
   
   "_comment_chrX": "This section of the .json file asks for information needed for the analysis of the X chromosome",
-  "vcf_ref_panel_path_X": "/mnt/storage/SAYRES/PCA_tutorial/snakemake/chrX/",
-  "vcf_ref_panel_file": "chrX_reference_panel_females.recode.vcf",
-  "vcf_unknown_set_path_X": "/mnt/storage/SAYRES/PCA_tutorial/snakemake/chrX/",
+  "vcf_ref_panel_path_X": "/PopInf/Reference_Panel/",
+  "vcf_ref_panel_file": "chrX_reference_panel.recode.vcf",
+  "vcf_unknown_set_path_X": "/PopInf/Unknown_Samples/",
   "vcf_unknown_set_file": "chrX_unknown_panel.recode.vcf",
-  "X_chr_coordinates": "/mnt/storage/SAYRES/PCA_tutorial/lists/X_chromosome_regions_XTR_hg19.bed",
+  "X_chr_coordinates": "/PopInf/X_chromosome_regions_XTR_hg19.bed",
 }
 ```
 After editing `popInf.config.json` make sure that this file has maintained proper json format. You can use The JSON Validator for example (https://jsonlint.com/).
