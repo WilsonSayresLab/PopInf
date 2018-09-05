@@ -8,7 +8,7 @@
   "ref_path": "/PopInf/Reference_Genome/hs37d5.fa",
   "vcf_ref_panel_path": "/PopInf/Reference_Panel/",
   "vcf_ref_panel_prefix": "chr",
-  "vcf_ref_panel_suffix": "_reference_panel.recode.vcf",
+  "vcf_ref_panel_suffix": "_10000genomes_selected_individuals.vcf.gz",
   "vcf_unknown_set_path": "/PopInf/Unknown_Samples/",
   "vcf_unknown_set_prefix": "chr",
   "vcf_unknown_set_suffix": "_unknown_panel.recode.vcf",
@@ -16,7 +16,7 @@
   
   "_comment_chrX": "This section of the .json file asks for information needed for the analysis of the X chromosome",
   "vcf_ref_panel_path_X": "/PopInf/Reference_Panel/",
-  "vcf_ref_panel_file": "chrX_reference_panel.recode.vcf",
+  "vcf_ref_panel_file": "chrX_10000genomes_selected_individuals.vcf.gz",
   "vcf_unknown_set_path_X": "/PopInf/Unknown_Samples/",
   "vcf_unknown_set_file": "chrX_unknown_panel.recode.vcf",
   "X_chr_coordinates": "/PopInf/X_chromosome_regions_XTR_hg19.bed",
