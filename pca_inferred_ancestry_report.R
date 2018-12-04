@@ -18,7 +18,7 @@ circle_function <- function(continent) {
   mean_y <- mean(continent_of_choice_data$V3.y)
   points(mean_x, mean_y, pch = 3, cex = 1)
   test <- sqrt( ((mean_x - (continent_of_choice_data$V2.y))^2) + ((mean_y - (continent_of_choice_data$V3.y))^2) )
-  radius <- sqrt(sum((test-0)^2/(length(test)-1)))
+  radius <- sqrt(sum((test-0)^2/(length(test)-1))) # this looks good
   draw.circle(mean_x, mean_y, radius)
   draw.circle(mean_x, mean_y, radius*3)
 }
@@ -30,7 +30,7 @@ circle_function_noplot <- function(continent) {
   mean_x <- mean(continent_of_choice_data$V2.y)
   mean_y <- mean(continent_of_choice_data$V3.y)
   test <- sqrt( ((mean_x - (continent_of_choice_data$V2.y))^2) + ((mean_y - (continent_of_choice_data$V3.y))^2) )
-  radius <- sqrt(sum((test-0)^2/(length(test)-1)))
+  radius <- sqrt(sum((test-0)^2/(length(test)-1))) # this looks good
   my_list <- list("radius" = radius, "mean_x" = mean_x, "mean_y" = mean_y)
   return(my_list)
 }
@@ -49,6 +49,14 @@ out_inferred_report = args[6]
 ### SET UP OUTPUT PDF ###
 pfdfilename <- paste(out,".pdf",sep="")
 pdf(pfdfilename, 8,8) #save as pdf, with size 8x8
+
+
+
+# THIS IS FOR TESTING PURPOSES ONLY AND SHOULD BE DELETED WHEN NO LONGER NEEDED!!!
+#evec_file <- read.table("merge_all_chr_reference_panel_unknown_set_SNPs_no_missing_plink_LDprune_Fix_noVariantInName.evec", header = FALSE)
+#eval_file <- read.table("merge_all_chr_reference_panel_unknown_set_SNPs_no_missing_plink_LDprune.eval", header = FALSE)
+#known_population_file <- read.table("../Main_analyses/Scripts/ThousandGenomesSamples_AdmxRm_SHORT.txt", header = FALSE, sep = "\t")
+#unkownpop_file <- read.table("../Main_analyses/Scripts/gtex_samples_SHORT.txt", header = FALSE, sep = "\t")
 
 
 ### READ IN DATA ###
@@ -77,11 +85,11 @@ n_colors <- length(levels(evec_file_full$V3.x))
 rainbowcols <- rainbow(n_colors)
 
 # Generate the legend
-plot(1, type="n", axes=FALSE, xlab="", ylab="", main = "Key", cex=1.5)
+plot(1, type="n", axes=FALSE, xlab="", ylab="", main = "Key")
 legend('topleft', bty="n", legend = c(levels(evec_file_full$V3.x)), fill = c(rainbowcols),
-       cex = 1, title=expression(bold("Populations")))
+       cex = 1, title=expression(bold("Population Clusters")))
 legend('top', bty="n", legend = c(levels(evec_file_full$V2.x)),
-       cex = 1, pch = c(2, 1)[evec_file_full$V2.x], title=expression(bold("Genetic Sex")))
+       cex = 1, pch = c(2, 5)[evec_file_full$V2.x], title=expression(bold("Genetic Sex")))
 
 
 
@@ -101,8 +109,7 @@ while (i<10)
   pc2 <- round(pc2, digits = 2) # round so number doesnt have a lot of decimal places
   axis_pc2 <- paste("PC",i+1," (",pc2,"%)",sep="")
   plot(evec_file_full[,j],evec_file_full[,z], xlab = axis_pc1, ylab = axis_pc2,
-       col=c(rainbowcols)[evec_file_full$V3.x], pch =c(16, 17)[evec_file_full$V2.x], asp = 1, 
-       par(cex.axis=1.5,cex.lab=2))
+       col=c(rainbowcols)[evec_file_full$V3.x], pch =c(18, 17)[evec_file_full$V2.x], asp = 1)
   i <- i+2
   a <- a + 1
 
@@ -110,6 +117,7 @@ while (i<10)
 
 ### SET UP OUTPUT INFERRED POPULATION REPORT ###
 inferredpopreport <- paste(out_inferred_report,".txt",sep="")
+#inferredpopreport <- paste("out_inferred_report_new",".txt",sep="")
 
 
 ### INFERRED ANCESTRY REPORT ###
@@ -118,9 +126,9 @@ print("Inferred population report has started")
 # Generate the legend for the plot with cluster and midpoint info
 plot(1, type="n", axes=FALSE, xlab="", ylab="", main = "Key")
 legend('topleft', bty="n", legend = c(levels(evec_file_full$V3.x)), fill = c(rainbowcols),
-       cex = 1, title=expression(bold("Populations")))
+       cex = 1, title=expression(bold("Population Clusters")))
 legend('top', bty="n", legend = c(levels(evec_file_full$V2.x)),
-       cex = 1, pch = c(2, 1)[evec_file_full$V2.x], title=expression(bold("Genetic Sex")))
+       cex = 1, pch = c(2, 5)[evec_file_full$V2.x], title=expression(bold("Genetic Sex")))
 legend('left', bty="n", legend = c("Cluster Centroid",
                                    "1 and 3 Standard Deviations from Cluster Mean",
                                    "Pair-wise Cluster Mid Points"),
@@ -128,8 +136,7 @@ legend('left', bty="n", legend = c("Cluster Centroid",
 
 # Plot
 plot(evec_file_full[,4],evec_file_full[,5], xlab = "PC1", ylab = "PC2",
-     col=c(rainbowcols)[evec_file_full$V3.x], pch =c(16, 17)[evec_file_full$V2.x], asp = 1,
-     par(cex.axis=1.5,cex.lab=2))
+     col=c(rainbowcols)[evec_file_full$V3.x], pch =c(18, 17)[evec_file_full$V2.x], asp = 1)
 
 # Print all clusters onto the scatter plot
 test_vector <- levels(known_sample_info_merge$V3.x)
@@ -156,11 +163,12 @@ combination_num <- 0
 for (i in 1:length(test_vector)) {
   num <- i + 1
   for (num in i:length(test_vector)) {
-    if (num > length(test_vector)) {}
+    if (num > length(test_vector)) {} # we will skip this index because it is past the length of our vector and uninformative (no data)
     else {
-      if (test_vector[i] == test_vector[num]) {}
+      if (test_vector[i] == test_vector[num]) {} #skip this comparison. This is a self-self comparison
       else {
         comparison <- c(test_vector[i], test_vector[num])
+        # so now we have to get our values we need to find midpoints
         my_list <- circle_function_noplot(test_vector[i])
         test_mean_x_first <- my_list$mean_x
         test_mean_y_first <- my_list$mean_y
@@ -175,7 +183,7 @@ for (i in 1:length(test_vector)) {
         points(x_mid,y_mid, col = "black", pch = 4)
         comparison_name <- paste(test_vector[i], test_vector[num], sep = "-")
         combination_num <- combination_num + 1
-        mat_meanx_meany_compares[combination_num,] <- c(comparison_name,x_mid,y_mid,0)
+        mat_meanx_meany_compares[combination_num,] <- c(comparison_name,x_mid,y_mid,0)  # need a fourth column for merging with other matrix. I will add 0 to the 4th column
       }
     }
   }
@@ -251,6 +259,9 @@ for (i in UnkownPop_data_WithInfo[,1]) {
   }
 
   vector_to_add_df <- c(vector_to_add_df, inferred_pop_1SD, inferred_pop_2SD, inferred_pop_3SD)
+# I think below is what needs to be changed. Instead of getting less inferred ancestry from testing the centroid distance
+# and the centroid of all clusters, if the individual does not fall within 3SD of any cluster, the script will compare the distance from
+# 3SD of all clusters with distance from midpoints of all pairwise clusters. 
   less_rest_inf_pop <- c()
   cat_points <- rbind(mat_meanx_meany_rad, mat_meanx_meany_compares)
   n_all <- length(cat_points[,1])
@@ -258,6 +269,7 @@ for (i in UnkownPop_data_WithInfo[,1]) {
   if (inferred_pop_3SD == "-"){
     for (test_all_pts in 1:length(cat_points[,1])) {
       if (cat_points[test_all_pts,4] != 0){
+        # so below put the calculation for comparing i or test_all_points to 3SD not the centroid
         x <- as.numeric(cat_points[test_all_pts,2])
         y <- as.numeric(cat_points[test_all_pts,3])
         dist_i_to_centroid <- sqrt( ((x - pc_x)^2) + ((y - pc_y)^2) )
@@ -266,7 +278,12 @@ for (i in UnkownPop_data_WithInfo[,1]) {
         x <- as.numeric(cat_points[test_all_pts,2])
         y <- as.numeric(cat_points[test_all_pts,3])
         dist_i_to_pnt <- sqrt( ((x - pc_x)^2) + ((y - pc_y)^2) )
+        # have to figure out what to do with lines 285-286 and possibly 284
+        #com_all_pnts[test_all_pts,] <- c(cat_points[test_all_pts,1],dist_i_to_pnt)
+        #index_num <- which(com_all_pnts == min(com_all_pnts)) - n_all
+        #less_rest_inf_pop <- com_all_pnts[index_num]
       }
+      # then here put finding the lowest value and getting the less_rest_inf_pop from com_all_pnts[index_num]. Below may have to change
       com_all_pnts[test_all_pts,] <- c(cat_points[test_all_pts,1],dist_i_to_pnt)
       index_num <- which(com_all_pnts == min(com_all_pnts)) - n_all
       less_rest_inf_pop <- com_all_pnts[index_num]
@@ -275,10 +292,29 @@ for (i in UnkownPop_data_WithInfo[,1]) {
 
   vector_to_add_df <- c(vector_to_add_df, less_rest_inf_pop)
 
+#  less_rest_inf_pop <- c()
+#  cat_points <- rbind(mat_meanx_meany_rad, mat_meanx_meany_compares)
+#  n_all <- length(cat_points[,1])
+#  com_all_pnts <- matrix(ncol=2, nrow=n_all)
+#  if (inferred_pop_3SD == "-"){
+#    for (test_all_pts in 1:length(cat_points[,1])) {
+#      x <- as.numeric(cat_points[test_all_pts,2])
+#      y <- as.numeric(cat_points[test_all_pts,3])
+#      dist_i_to_pnt <- sqrt( ((x - pc_x)^2) + ((y - pc_y)^2) )
+#      com_all_pnts[test_all_pts,] <- c(cat_points[test_all_pts,1],dist_i_to_pnt)
+#      index_num <- which(com_all_pnts == min(com_all_pnts)) - n_all
+#      less_rest_inf_pop <- com_all_pnts[index_num]
+#    }
+#  } else {less_rest_inf_pop <- inferred_pop_3SD}
+#
+#vector_to_add_df <- c(vector_to_add_df, less_rest_inf_pop)
+
+  
   for (cluster in 1:length(mat_meanx_meany_rad[,1])) {
     x <- as.numeric(mat_meanx_meany_rad[cluster,2])
     y <- as.numeric(mat_meanx_meany_rad[cluster,3])
     dist_i_to_cluster_centriod <- sqrt( ((x - pc_x)^2) + ((y - pc_y)^2) )
+    #cluster_dist_i <- paste(dist_i_to_cluster_centriod)
     cluster_dist_i <- format(round(dist_i_to_cluster_centriod, 5), nsmall = 5)
     vector_to_add_df <- c(vector_to_add_df, cluster_dist_i)
   }

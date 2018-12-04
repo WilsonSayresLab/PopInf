@@ -39,7 +39,7 @@ if [[ $1 = "A" ]]; then
 		
 	# Create the merge list
 	date
-	python mak_merge_list.py --path autosomes/merge/ --stem _reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune --out merge_list
+	python make_merge_list.py --path autosomes/merge/ --stem _reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune --out merge_list
 	date
 	echo ""
 	
