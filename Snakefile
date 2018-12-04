@@ -1,6 +1,6 @@
 # This snakemake file will analyze the autosomes and the X chromosome separately in two blocks.
-# The first block will be for the autosomes that have been separated by chromosome and the second block will be for the 
-# X chromosome. 
+# The first block will be for the autosomes that have been separated by chromosome and the second block will be for the
+# X chromosome.
 
 # The user must first provide the directories and file names for the reference and unknown panels in the popInf.config.json
 configfile: "popInf.config.json"
@@ -15,9 +15,11 @@ if config["Autosomes_Yes_or_No"]=="Y":
 			expand("autosomes/merge/chr{chrm}_reference_panel_unknown_set_SNPs_merge_no_missing.recode.vcf", chrm=config["chromosome"]),
 			expand("autosomes/merge/chr{chrm}_reference_panel_unknown_set_SNPs_merge_no_missing_plink.map", chrm=config["chromosome"]),
 			expand("autosomes/merge/chr{chrm}_reference_panel_unknown_set_SNPs_merge_no_missing_plink.ped", chrm=config["chromosome"]),
+			expand("autosomes/merge/chr{chrm}_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune.prune.in", chrm=config["chromosome"]),
+			expand("autosomes/merge/chr{chrm}_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune.prune.out", chrm=config["chromosome"]),
 			expand("autosomes/merge/chr{chrm}_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune.map", chrm=config["chromosome"]),
 			expand("autosomes/merge/chr{chrm}_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune.ped", chrm=config["chromosome"])
-			
+
 	# Keep only SNPs for both data sets by chromosome
 	rule snps_ref_panel:
 		input:
@@ -28,6 +30,14 @@ if config["Autosomes_Yes_or_No"]=="Y":
 		shell:
 			"gatk -T SelectVariants -R {input.ref} -V {input.vcf_by_chr} -selectType SNP -o {output}"
 
+	'''rule snps_unkn_set:
+		input:
+			vcf_by_chr = (config["vcf_unknown_set_path"] + config["vcf_unknown_set_prefix"] + "{chrm}" + config["vcf_unknown_set_suffix"])
+		output:
+			"autosomes/unk_set/chr{chrm}_unkown_set_SNPs.recode.vcf"
+		shell:
+			"vcftools --vcf {input.vcf_by_chr} --remove-indels --recode --recode-INFO-all -c > {output}"'''
+
 	rule snps_unkn_set:
 		input:
 			ref = config["ref_path"],
@@ -36,7 +46,7 @@ if config["Autosomes_Yes_or_No"]=="Y":
 			"autosomes/unk_set/chr{chrm}_unkown_set_SNPs.recode.vcf"
 		shell:
 			"gatk -T SelectVariants -R {input.ref} -V {input.vcf_by_chr} -selectType SNP -o {output}"
-			
+
 	# Merge SNP data from both sets
 	rule merge_snps:
 		input:
@@ -47,7 +57,7 @@ if config["Autosomes_Yes_or_No"]=="Y":
 			"autosomes/merge/chr{chrm}_reference_panel_unknown_set_SNPs_merge.vcf"
 		shell:
 			"gatk -T CombineVariants -R {input.ref} --variant {input.vcf_ref_set} --variant {input.vcf_unk_set} -o {output} -genotypeMergeOptions UNIQUIFY"
-			
+
 	# Remove missing data
 	rule rm_miss_data:
 		input:
@@ -56,7 +66,7 @@ if config["Autosomes_Yes_or_No"]=="Y":
 			"autosomes/merge/chr{chrm}_reference_panel_unknown_set_SNPs_merge_no_missing.recode.vcf"
 		shell:
 			"vcftools --vcf {input} --max-missing 1 --recode -c > {output}"
-			
+
 	# Convert to Plink
 	rule conv_plink:
 		input:
@@ -75,14 +85,26 @@ if config["Autosomes_Yes_or_No"]=="Y":
 	    	 plink_map_file = "autosomes/merge/chr{chrm}_reference_panel_unknown_set_SNPs_merge_no_missing_plink.map",
 	    	 plink_ped_file = "autosomes/merge/chr{chrm}_reference_panel_unknown_set_SNPs_merge_no_missing_plink.ped"
 		output:
+	    	 in_prune = "autosomes/merge/chr{chrm}_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune.prune.in",
+	    	 out_prune = "autosomes/merge/chr{chrm}_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune.prune.out"
+		params:
+			 chr_num = "{chrm}"
+		shell:
+			"plink --file autosomes/merge/chr{params.chr_num}_reference_panel_unknown_set_SNPs_merge_no_missing_plink --indep-pairwise 50 10 0.1 --out autosomes/merge/chr{params.chr_num}_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune"
+
+	rule rm_ld:
+		input:
+	    	 plink_map_file = "autosomes/merge/chr{chrm}_reference_panel_unknown_set_SNPs_merge_no_missing_plink.map",
+	    	 plink_ped_file = "autosomes/merge/chr{chrm}_reference_panel_unknown_set_SNPs_merge_no_missing_plink.ped",
+			 out_prune = "autosomes/merge/chr{chrm}_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune.prune.out"
+		output:
 	    	 map_prune = "autosomes/merge/chr{chrm}_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune.map",
 	    	 ped_prune = "autosomes/merge/chr{chrm}_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune.ped"
 		params:
-			 chr_num = "{chrm}"
-		shell: 
-			"plink --file autosomes/merge/chr{params.chr_num}_reference_panel_unknown_set_SNPs_merge_no_missing_plink --indep-pairwise 50 10 0.1 --recode --out autosomes/merge/chr{params.chr_num}_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune"
-		
-# PART 2: X CHROMOSOME		
+			chr_num = "{chrm}"
+		shell:
+			"plink --file autosomes/merge/chr{params.chr_num}_reference_panel_unknown_set_SNPs_merge_no_missing_plink --exclude {input.out_prune} --recode --out autosomes/merge/chr{params.chr_num}_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune"
+# PART 2: X CHROMOSOME
 else:
 	rule all:
 		input:
@@ -97,7 +119,7 @@ else:
 			expand("chrX/merge/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune.ped"),
 			expand("chrX/merge/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_editColumn6.ped"),
 			expand("chrX/pca/par/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_par_PCA.par")
-		
+
 	# Keep the SNPS for each data set and biological sex
 	rule keep_SNPS_chrX:
 		input:
@@ -109,9 +131,10 @@ else:
 			unk_panel_SNPs = "chrX/unk_set/chrX_unknown_panel_set_SNPs.recode.vcf"
 		shell: """
 			gatk -T SelectVariants -R {input.ref} -V {input.ref_panel} -selectType SNP -o {output.ref_panel_SNPs};
-			gatk -T SelectVariants -R {input.ref} -V {input.unk_panel} -selectType SNP -o {output.unk_panel_SNPs}
+			vcftools --vcf {input.unk_panel} --remove-indels --recode --recode-INFO-all -c > {output.unk_panel_SNPs}
 		"""
-		
+#gatk -T SelectVariants -R {input.ref} -V {input.unk_panel} -selectType SNP -o {output.unk_panel_SNPs}
+
 	# Merge the files
 	rule merge_chrX_files:
 		input:
@@ -122,7 +145,7 @@ else:
 			merge_ref_unk = "chrX/merge/chrX_reference_panel_unknown_set_SNPs_merge.vcf"
 		shell:
 			"gatk -T CombineVariants -R {input.ref} --variant {input.ref_panel} --variant {input.unk_panel} -o {output.merge_ref_unk} -genotypeMergeOptions UNIQUIFY"
-			
+
 	# Remove the PARS and X Transposed regions
 	rule remove_PARS_XTR:
 		input:
@@ -156,7 +179,7 @@ else:
 	rule ld_prune_x:
 		input:
 			ref_unk_plink_map = "chrX/merge/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink.map",
-			ref_unk_plink_ped = "chrX/merge/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink.ped"	
+			ref_unk_plink_ped = "chrX/merge/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink.ped"
 		output:
 			ref_unk_map_prune = "chrX/merge/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune.map",
 			ref_unk_ped_prune = "chrX/merge/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune.ped"
@@ -166,7 +189,7 @@ else:
 	# Edit the 6th column of the .ped file
 	rule edit_ped_file:
 		input:
-			"chrX/merge/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune.ped"			
+			"chrX/merge/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune.ped"
 		output:
 			"chrX/merge/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_editColumn6.ped"
 		shell: """
@@ -177,7 +200,7 @@ else:
 	rule make_par_file:
 		input:
 			ref_unk_map = "chrX/merge/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune.map",
-			ref_unk_ped_edit = "chrX/merge/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_editColumn6.ped"											
+			ref_unk_ped_edit = "chrX/merge/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_editColumn6.ped"
 		output:
 			"chrX/pca/par/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_par_PCA.par"
 		shell:
