@@ -69,8 +69,6 @@ if config["Autosomes_Yes_or_No"]=="Y":
 			"gatk -T CombineVariants -R {input.ref} --variant {input.vcf_ref_set} --variant {input.vcf_unk_set} -o {output} -genotypeMergeOptions UNIQUIFY"
 
 	# Remove missing data
-	# NOTE: Make the max missing a parameter in the config file and change file names in
-	# snakefile and sh script.
 	rule rm_miss_data:
 		input:
 			"autosomes/merge/chr{chrm}_reference_panel_unknown_set_SNPs_merge.vcf"
@@ -80,7 +78,6 @@ if config["Autosomes_Yes_or_No"]=="Y":
 			max_miss = config["genotype_call_rate_threshold"]
 		shell:
 			"vcftools --vcf {input} --max-missing {params.max_miss} --recode -c > {output}"
-			#"vcftools --vcf {input} --max-missing 0.98 --recode -c > {output}"
 
 
 	# Convert to Plink
@@ -146,7 +143,6 @@ if config["Autosomes_Yes_or_No"]=="Y":
 			"python make_par.py --map {input.map_file} --ped {input.ped_fix_file} --ev autosomes/pca/out/chr{params.chr_num}_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune --par autosomes/pca/par/chr{params.chr_num}_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune_par"
 
 	# Run smartpca
-	# smartpca -p autosomes/pca/par/chr{chrm}_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune_par_PCA.par
 	rule run_pca:
 		input:
 			par = "autosomes/pca/par/chr{chrm}_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune_par_PCA.par"
@@ -178,7 +174,6 @@ if config["Autosomes_Yes_or_No"]=="Y":
 		shell: """awk '{{gsub(/\.variant2/,""); gsub(/\.variant/,""); print}}' {input.evec_fix_1} > {output.evec_fix_2}"""
 
 	# Plot results and get inferred population report
-	# Rscript pca_inferred_ancestry_report.R (_Fix2.evec) (.eval) config["ref_panel_pop_info_path"] config["unkn_panel_pop_info_path"] autosomes/per_chr_results/chr{chrm}_inferred_pop_plot autosomes/per_chr_results/chr{chrm}_inferred_pop_report
 	rule results:
 		input:
 			evec = "autosomes/pca/out/chr{chrm}_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune_Fix2.evec",
@@ -191,6 +186,7 @@ if config["Autosomes_Yes_or_No"]=="Y":
 		params:
 			chr_num = "{chrm}"
 		shell:"""Rscript pca_inferred_ancestry_report.R {input.evec} {input.eval_file} {input.ref_panel} {input.unk} autosomes/per_chr_results/chr{params.chr_num}_inferred_pop_plot autosomes/per_chr_results/chr{params.chr_num}_inferred_pop_report"""
+
 
 # PART 2: X CHROMOSOME
 else:
@@ -227,7 +223,6 @@ else:
 			gatk -T SelectVariants -R {input.ref} -V {input.ref_panel} -selectType SNP -o {output.ref_panel_SNPs};
 			vcftools --vcf {input.unk_panel} --remove-indels --recode --recode-INFO-all -c > {output.unk_panel_SNPs}
 		"""
-#gatk -T SelectVariants -R {input.ref} -V {input.unk_panel} -selectType SNP -o {output.unk_panel_SNPs}
 
 	# Merge the files
 	rule merge_chrX_files:
@@ -304,7 +299,6 @@ else:
 		shell:
 			"python make_par.py --map {input.ref_unk_map} --ped {input.ref_unk_ped_edit} --ev chrX/pca/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune --par chrX/pca/par/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_par"
 
-	
 	# run PCA
 	rule run_pca:
 		input:
