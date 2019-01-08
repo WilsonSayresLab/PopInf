@@ -103,6 +103,9 @@ Below, there are details on what to add or change in the configuration file.
 ### Provide information about the reference file used for mapping variants
 `"ref_path": ` Add the full path to and name of the reference genome file.
 
+### Specify the call rate threshold
+`"genotype_call_rate_threshold": ` Removes sites with a user specified call rate. For example, if you want to remove sites with any missing data (call rate of 100%) set `"genotype_call_rate_threshold": ` to `"1.0"`. If you don't want to implements a call rate threshold, set `"genotype_call_rate_threshold": ` to `"0"`. 
+
 ### Additional information to provide if analyzing the autosomes
 `"vcf_ref_panel_path": ` Add the full path to the zipped reference panel VCF files that are separated by chromosome. Make sure the path has "/" at the end.
 
@@ -116,7 +119,7 @@ Below, there are details on what to add or change in the configuration file.
 
 `"vcf_unknown_set_suffix": ` Add the part of the name of the unknown VCF files that comes after the chr number. For example, if the unknown VCF file for chromosome 1 is named `chr1_unknown_panel.vcf.gz` then you would add `"_unknown_panel.vcf.gz"` to the config file.
 
-`"chromosome": ` You may leave it as is, unless you do not want to analyze all chromosomes. PopInf has an option to analyze the X chromosome (separately from the autosomes) so the X chromosome is not added here. If you are interested in analyzing the X chromosome, see below.
+`"chromosome": ` You may leave it as is, unless you do not want to analyze chromosomes 1-22. PopInf has an option to analyze the X chromosome (separately from the autosomes) so the X chromosome is not added here. If you are interested in analyzing the X chromosome, see below.
 
 ### Additional information to provide if analyzing the X chromosome
 `"vcf_ref_panel_path_X": ` Add the full path to the zipped reference panel VCF file for the X chromosome. Make sure the path has "/" at the end.
@@ -133,31 +136,38 @@ Below, there are details on what to add or change in the configuration file.
 This step will provide instructions on how to run PopInf. With our server, we chose to use an sbatch script to run PopInf. This script is provided in this folder if your wish to use this. However, depending on your server, you might need to run PopInf differently. All the necessary scripts are provided in this folder.
 
 ### Edit the .sh script
-Before running the sbatch script, some necessary edits are needed. These edits are specified both within the script and here by line number.
+Before running the sbatch script, some necessary edits are needed. These edits are specified both at the top of the script and here:
 
-Line 7 - edit the email after `#SBATCH --mail-user= ` to be the email that you wish your slurm notification to be sent to.
+#### 1. Path to the location of the Snakefile and corresponding scripts (Line 25)
+SPATH=/full/path/to/PopInf/directory/
 
-Line 14 - edit the path to which all of the following scripts and files are located: (1) Snakefile, (2) snakemake_PopInf_slurm.sh, (3) popInf_environment.yaml, (4) popInf.config.json, (5) make_merge_list.py, (6) make_par.py, (7) pca_inferred_ancestry_report.R. These scripts and files are all provided in this folder. These scripts and files must all be located within the same directory.
+#### 2. Name of the environment you created (Line 27)
+ENV=popInf
 
-Line 15 - edit the name of the environment you created.
+#### 3. Email you want the notifications to be sent to. If running on a cluster. This is the email address you wish to send slurm logs to (Line 30)
+EMAIL=youremail@email.com
 
-Line 33, 103 - edit the email to be the email that you wish your slurm notification to be sent to.
+#### 4. The path to and file name of the reference panel samples list (Line 32)
+POPFILEREF=/full/path/to/reference_panel/Sample_Information/file.txt
 
-Line 87, 131 - edit the paths to and file names of the reference panel sample list and the unknown panel sample list.
+#### 5. The path to and file name of the unknown panel samples list (Line 34)
+POPFILEUNK=/full/path/to/unknown_sets/Sample_Information/file.txt
 
-### Run the .sh script
+### Run the PopInf
 The following section discusses how the run the sbatch script to run PopInf. The script can be run differently depending on whether the autosomes or X chromosome is to be analyzed.
 
-#### Use the following commands to run the sbatch script:
+NOTE: Make sure you edit `snakemake_PopInf_slurm.sh` before running PopInf
+
+#### Use the following command to run the sbatch script on automsomes:
 ```
 sbatch snakemake_PopInf_slurm.sh A
 ```
-NOTE: The `A` must be capitalized if analyzing the autosomes. If analyzing the X chromosome, remove the `A` and run the command as follows:
+#### Use the following command to run the sbatch script on the X chromosome:
 ```
-sbatch snakemake_PopInf_slurm.sh
+sbatch snakemake_PopInf_slurm.sh X
 ```
 
 ## The results of running PopInf
-After submitting `snakemake_PopInf_slurm.sh` PopInf will run. Once completed, PopInf will output PCA plots as well as an inferred population report. The PCA plots will provide a visual representation of how the unknown sample(s) compare(s) to the reference panel. For each unknown sample, the inferred population reports will provide distances to each reference population's centroid, and inferred ancestry based on how close the sample is to each population.
+After submitting `snakemake_PopInf_slurm.sh` PopInf will run. PopInf will output PCA plots as well as an inferred population report for each automsome separately and all autosomes merged and the X chromosome. The PCA plots will provide a visual representation of how the unknown sample(s) compare(s) to the reference panel. For each unknown sample, the inferred population reports will provide distances to each reference population's centroid, and inferred ancestry based on how close the sample is to each population.
 
-We ran PopInf using 986 unrelated individuals from the 1000 Genomes consortium as our reference panel and 148 GTEx samples as our unknown panel. Our sample lists are provided in this folder, and our configuration file can be seen above. Additionally, we have provided the PCA plot and inferred population report that PopInf generated for the autosomes in this folder.
+We ran PopInf using 986 unrelated individuals from the 1000 Genomes consortium as our reference panel and 148 GTEx samples as our unknown panel. Our sample lists are provided in this folder, and our configuration file can be seen above. Additionally, we have provided the PCA plot and inferred population report that PopInf generated for the merged autosomes in this folder.
