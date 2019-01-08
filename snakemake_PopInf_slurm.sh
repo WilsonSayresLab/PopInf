@@ -22,16 +22,16 @@
 # data.
 
 # 1. Path to the location of the Snakefile and corresponding scripts
-SPATH=/scratch/amtarave/tcga_exome_popInf/PopInf/
+SPATH=/full/path/to/PopInf/directory/
 # 2. Name of the environment you created
 ENV=popInf
 # 3. Email you want the notifications to be sent to. If running on a cluster. 
 # This is the email address you wish to send slurm logs to.
-EMAIL=amtarave@asu.edu
+EMAIL=youremail@email.com
 # 4. The path to and file name of the reference panel samples list
-POPFILEREF=/scratch/amtarave/tcga_exome_popInf/PopInf/Sample_Information/ThousandGenomesSamples_AdmxRm.txt
+POPFILEREF=/full/path/to/Sample_Information/ThousandGenomesSamples_AdmxRm.txt
 # 5. The path to and file name of the unknown panel samples list
-POPFILEUNK=/home/amtarave/projects/TCGA_exome_popInf/lists/LIHC_primary_data_exome_VCF_samples_short.txt
+POPFILEUNK=/full/path/to/unknown_sample/Sample_Information/INFO.txt
 
 ###############################################################################
 date
