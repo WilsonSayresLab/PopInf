@@ -139,19 +139,21 @@ This step will provide instructions on how to run PopInf. With our server, we ch
 Before running the sbatch script, some necessary edits are needed. These edits are specified both at the top of the script and here:
 
 #### 1. Path to the location of the Snakefile and corresponding scripts (Line 25)
-SPATH=/full/path/to/PopInf/directory/
+`SPATH=/full/path/to/PopInf/directory/`
 
 #### 2. Name of the environment you created (Line 27)
-ENV=popInf
+`ENV=popInf`
 
 #### 3. Email you want the notifications to be sent to. If running on a cluster. This is the email address you wish to send slurm logs to (Line 30)
-EMAIL=youremail@email.com
+`EMAIL=youremail@email.com`
 
 #### 4. The path to and file name of the reference panel samples list (Line 32)
-POPFILEREF=/full/path/to/reference_panel/Sample_Information/file.txt
+`POPFILEREF=/full/path/to/reference_panel/Sample_Information/file.txt`
 
 #### 5. The path to and file name of the unknown panel samples list (Line 34)
-POPFILEUNK=/full/path/to/unknown_sets/Sample_Information/file.txt
+`POPFILEUNK=/full/path/to/unknown_sets/Sample_Information/file.txt`
+
+NOTE: If you are not running this shell script on a cluster, remove lines 2-7 and replace the snakemake command on line 65 with just `snakemake`
 
 ### Run the PopInf
 The following section discusses how the run the sbatch script to run PopInf. The script can be run differently depending on whether the autosomes or X chromosome is to be analyzed.
