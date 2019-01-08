@@ -3,9 +3,12 @@
   "ref_panel_pop_info_path": "/PopInf/Sample_Information/ThousandGenomesSamples_AdmxRm.txt",
   "unkn_panel_pop_info_path": "/PopInf/Sample_Information/GTExSamples.txt",
   
-  "_comment_autosomes": "This section of the .json file asks for information needed for the autosomes if they are to be analyzed",
+  "_comment_general_options": "This section of the .json file asks for information needed to run popInf regardelss of what chromosomes you choose to analyze",
   "Autosomes_Yes_or_No": "N",
-  "ref_path": "/PopInf/Reference_Genome/hs37d5.fa",
+  "ref_path": "/mnt/storage/SAYRES/REFERENCE_GENOMES/hs37d5/hs37d5.fa",
+  "genotype_call_rate_threshold": "0.98",
+  
+  "_comment_autosomes": "This section of the .json file asks for information needed for the autosomes if they are to be analyzed",
   "vcf_ref_panel_path": "/PopInf/Reference_Panel/",
   "vcf_ref_panel_prefix": "chr",
   "vcf_ref_panel_suffix": "_10000genomes_selected_individuals.vcf",
