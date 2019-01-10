@@ -10,7 +10,7 @@
 # Please run this script as follows:
 # sbatch snakemake_PopInf_slurm.sh A 
 # or
-# sbatch snakemake_PopInf_slurm.sh A 
+# sbatch snakemake_PopInf_slurm.sh X 
 
 # NOTE #
 # If you are not running this shell script on a cluster, remove lines 2-7
