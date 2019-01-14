@@ -17,7 +17,7 @@
 # and replace the snakemake command on line 65 with just "snakemake"
 
 ###############################################################################
-# ATTENETION #
+# ATTENTION #
 # Please change the following variables so that this script runs based on your
 # data.
 
