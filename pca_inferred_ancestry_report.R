@@ -89,7 +89,7 @@ plot(1, type="n", axes=FALSE, xlab="", ylab="", main = "Key")
 legend('topleft', bty="n", legend = c(levels(evec_file_full$V3.x)), fill = c(rainbowcols),
        cex = 1, title=expression(bold("Population Clusters")))
 legend('top', bty="n", legend = c(levels(evec_file_full$V2.x)),
-       cex = 1, pch = c(2, 5)[evec_file_full$V2.x], title=expression(bold("Genetic Sex")))
+       cex = 1, pch = c(2, 1)[evec_file_full$V2.x], title=expression(bold("Genetic Sex")))
 
 
 
@@ -109,7 +109,7 @@ while (i<10)
   pc2 <- round(pc2, digits = 2) # round so number doesnt have a lot of decimal places
   axis_pc2 <- paste("PC",i+1," (",pc2,"%)",sep="")
   plot(evec_file_full[,j],evec_file_full[,z], xlab = axis_pc1, ylab = axis_pc2,
-       col=c(rainbowcols)[evec_file_full$V3.x], pch =c(18, 17)[evec_file_full$V2.x], asp = 1)
+       col=c(rainbowcols)[evec_file_full$V3.x], pch =c(16, 17)[evec_file_full$V2.x], asp = 1)
   i <- i+2
   a <- a + 1
 
@@ -128,7 +128,7 @@ plot(1, type="n", axes=FALSE, xlab="", ylab="", main = "Key")
 legend('topleft', bty="n", legend = c(levels(evec_file_full$V3.x)), fill = c(rainbowcols),
        cex = 1, title=expression(bold("Population Clusters")))
 legend('top', bty="n", legend = c(levels(evec_file_full$V2.x)),
-       cex = 1, pch = c(2, 5)[evec_file_full$V2.x], title=expression(bold("Genetic Sex")))
+       cex = 1, pch = c(2, 1)[evec_file_full$V2.x], title=expression(bold("Genetic Sex")))
 legend('left', bty="n", legend = c("Cluster Centroid",
                                    "1 and 3 Standard Deviations from Cluster Mean",
                                    "Pair-wise Cluster Mid Points"),
@@ -136,7 +136,7 @@ legend('left', bty="n", legend = c("Cluster Centroid",
 
 # Plot
 plot(evec_file_full[,4],evec_file_full[,5], xlab = "PC1", ylab = "PC2",
-     col=c(rainbowcols)[evec_file_full$V3.x], pch =c(18, 17)[evec_file_full$V2.x], asp = 1)
+     col=c(rainbowcols)[evec_file_full$V3.x], pch =c(16, 17)[evec_file_full$V2.x], asp = 1)
 
 # Print all clusters onto the scatter plot
 test_vector <- levels(known_sample_info_merge$V3.x)
@@ -231,19 +231,19 @@ for (i in UnkownPop_data_WithInfo[,1]) {
     sd_1 <- as.numeric(mat_meanx_meany_rad[cluster,4])
     if (dist_i_to_cluster_centriod <= sd_1) {
       test_all_for_ans_1SD <- TRUE
-      inferred_pop_1SD <- paste(inferred_pop_1SD, mat_meanx_meany_rad[cluster,1], sep = " ")
+      inferred_pop_1SD <- paste(inferred_pop_1SD, mat_meanx_meany_rad[cluster,1], sep = "")
     }
 
     sd_2 <- as.numeric(mat_meanx_meany_rad[cluster,4]) * 2
     if (dist_i_to_cluster_centriod <= sd_2) {
       test_all_for_ans_2SD <- TRUE
-      inferred_pop_2SD <- paste(inferred_pop_2SD, mat_meanx_meany_rad[cluster,1], sep = " ")
+      inferred_pop_2SD <- paste(inferred_pop_2SD, mat_meanx_meany_rad[cluster,1], sep = "")
     }
 
     sd_3 <- as.numeric(mat_meanx_meany_rad[cluster,4]) * 3
     if (dist_i_to_cluster_centriod <= sd_3) {
       test_all_for_ans_3SD <- TRUE
-      inferred_pop_3SD <- paste(inferred_pop_3SD, mat_meanx_meany_rad[cluster,1], sep = " ")
+      inferred_pop_3SD <- paste(inferred_pop_3SD, mat_meanx_meany_rad[cluster,1], sep = "")
     }
 
   }
