@@ -6,6 +6,7 @@
 ### LOAD PACKAGES ###
 library("car")
 library("plotrix")
+library("viridis")
 
 
 ### DEFINE FUNCTIONS ###
@@ -53,10 +54,10 @@ pdf(pfdfilename, 8,8) #save as pdf, with size 8x8
 
 
 # THIS IS FOR TESTING PURPOSES ONLY AND SHOULD BE DELETED WHEN NO LONGER NEEDED!!!
-#evec_file <- read.table("merge_all_chr_reference_panel_unknown_set_SNPs_no_missing_plink_LDprune_Fix_noVariantInName.evec", header = FALSE)
-#eval_file <- read.table("merge_all_chr_reference_panel_unknown_set_SNPs_no_missing_plink_LDprune.eval", header = FALSE)
-#known_population_file <- read.table("../Main_analyses/Scripts/ThousandGenomesSamples_AdmxRm_SHORT.txt", header = FALSE, sep = "\t")
-#unkownpop_file <- read.table("../Main_analyses/Scripts/gtex_samples_SHORT.txt", header = FALSE, sep = "\t")
+#evec_file <- read.table("chr21_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune_Fix2.evec", header = FALSE)
+#eval_file <- read.table("chr21_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune.eval", header = FALSE)
+#known_population_file <- read.table("ThousandGenomesSamples_AdmxRm_SHORT.txt", header = FALSE, sep = "\t")
+#unkownpop_file <- read.table("LIHC_primary_data_exome_VCF_samples_short.txt", header = FALSE, sep = "\t")
 
 
 ### READ IN DATA ###
@@ -82,14 +83,15 @@ print("Plotting has started")
 ### PLOTTING ###
 # Set up colors
 n_colors <- length(levels(evec_file_full$V3.x))
-rainbowcols <- rainbow(n_colors)
+#plot_colors <- rainbow(n_colors)
+plot_colors <- viridis(n_colors)
 
 # Generate the legend
 plot(1, type="n", axes=FALSE, xlab="", ylab="", main = "Key")
-legend('topleft', bty="n", legend = c(levels(evec_file_full$V3.x)), fill = c(rainbowcols),
+legend('topleft', bty="n", legend = c(levels(evec_file_full$V3.x)), fill = c(plot_colors),
        cex = 1, title=expression(bold("Population Clusters")))
 legend('top', bty="n", legend = c(levels(evec_file_full$V2.x)),
-       cex = 1, pch = c(2, 1)[evec_file_full$V2.x], title=expression(bold("Genetic Sex")))
+       cex = 1, pch = c(0, 1)[evec_file_full$V2.x], title=expression(bold("Genetic Sex")))
 
 
 
@@ -109,7 +111,7 @@ while (i<10)
   pc2 <- round(pc2, digits = 2) # round so number doesnt have a lot of decimal places
   axis_pc2 <- paste("PC",i+1," (",pc2,"%)",sep="")
   plot(evec_file_full[,j],evec_file_full[,z], xlab = axis_pc1, ylab = axis_pc2,
-       col=c(rainbowcols)[evec_file_full$V3.x], pch =c(16, 17)[evec_file_full$V2.x], asp = 1)
+       col=c(plot_colors)[evec_file_full$V3.x], pch =c(20, 15)[evec_file_full$V2.x], asp = 1)
   i <- i+2
   a <- a + 1
 
@@ -125,18 +127,18 @@ print("Inferred population report has started")
 
 # Generate the legend for the plot with cluster and midpoint info
 plot(1, type="n", axes=FALSE, xlab="", ylab="", main = "Key")
-legend('topleft', bty="n", legend = c(levels(evec_file_full$V3.x)), fill = c(rainbowcols),
+legend('topleft', bty="n", legend = c(levels(evec_file_full$V3.x)), fill = c(plot_colors),
        cex = 1, title=expression(bold("Population Clusters")))
 legend('top', bty="n", legend = c(levels(evec_file_full$V2.x)),
-       cex = 1, pch = c(2, 1)[evec_file_full$V2.x], title=expression(bold("Genetic Sex")))
-legend('left', bty="n", legend = c("Cluster Centroid",
+       cex = 1, pch = c(0, 1)[evec_file_full$V2.x], title=expression(bold("Genetic Sex")))
+legend('bottomleft', bty="n", legend = c("Cluster Centroid",
                                    "1 and 3 Standard Deviations from Cluster Mean",
                                    "Pair-wise Cluster Mid Points"),
        cex = 1, pch = c(3, 1, 4))
 
 # Plot
 plot(evec_file_full[,4],evec_file_full[,5], xlab = "PC1", ylab = "PC2",
-     col=c(rainbowcols)[evec_file_full$V3.x], pch =c(16, 17)[evec_file_full$V2.x], asp = 1)
+     col=c(plot_colors)[evec_file_full$V3.x], pch =c(20, 15)[evec_file_full$V2.x], asp = 1)
 
 # Print all clusters onto the scatter plot
 test_vector <- levels(known_sample_info_merge$V3.x)
@@ -231,19 +233,28 @@ for (i in UnkownPop_data_WithInfo[,1]) {
     sd_1 <- as.numeric(mat_meanx_meany_rad[cluster,4])
     if (dist_i_to_cluster_centriod <= sd_1) {
       test_all_for_ans_1SD <- TRUE
+      test_all_for_ans_1SD <- FALSE
       inferred_pop_1SD <- paste(inferred_pop_1SD, mat_meanx_meany_rad[cluster,1], sep = "")
     }
 
     sd_2 <- as.numeric(mat_meanx_meany_rad[cluster,4]) * 2
     if (dist_i_to_cluster_centriod <= sd_2) {
       test_all_for_ans_2SD <- TRUE
-      inferred_pop_2SD <- paste(inferred_pop_2SD, mat_meanx_meany_rad[cluster,1], sep = "")
+      #inferred_pop_2SD <- c()
+      if (is.null(inferred_pop_2SD)) {
+        inferred_pop_2SD <- paste(inferred_pop_2SD, mat_meanx_meany_rad[cluster,1], sep = "")
+      } else
+      inferred_pop_2SD <- paste(inferred_pop_2SD, mat_meanx_meany_rad[cluster,1], sep = "-")
     }
 
     sd_3 <- as.numeric(mat_meanx_meany_rad[cluster,4]) * 3
     if (dist_i_to_cluster_centriod <= sd_3) {
       test_all_for_ans_3SD <- TRUE
-      inferred_pop_3SD <- paste(inferred_pop_3SD, mat_meanx_meany_rad[cluster,1], sep = "")
+      #inferred_pop_3SD <- c()
+      if (is.null(inferred_pop_3SD)) {
+        inferred_pop_3SD <- paste(inferred_pop_3SD, mat_meanx_meany_rad[cluster,1], sep = "")
+      } else
+      inferred_pop_3SD <- paste(inferred_pop_3SD, mat_meanx_meany_rad[cluster,1], sep = "-")
     }
 
   }
@@ -288,7 +299,16 @@ for (i in UnkownPop_data_WithInfo[,1]) {
       index_num <- which(com_all_pnts == min(com_all_pnts)) - n_all
       less_rest_inf_pop <- com_all_pnts[index_num]
     }
-  } else {less_rest_inf_pop <- inferred_pop_3SD}
+  } else {
+    if (inferred_pop_1SD != "-"){
+      less_rest_inf_pop <- inferred_pop_1SD
+    } else {
+      if (inferred_pop_2SD != "-") {
+        less_rest_inf_pop <- inferred_pop_2SD 
+      } else {
+        less_rest_inf_pop <- inferred_pop_3SD
+      }
+    }}  
 
   vector_to_add_df <- c(vector_to_add_df, less_rest_inf_pop)
 
