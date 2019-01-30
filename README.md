@@ -43,6 +43,7 @@ Additional packages within R must be installed into this environment as well. Af
 ```
 conda install -c bioconda r-plotrix
 conda install -c r r-car
+conda install -c bioconda r-viridis 
 ```
 
 ## Step 2: Prepare the reference panel
