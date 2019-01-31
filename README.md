@@ -108,28 +108,28 @@ Below, there are details on what to add or change in the configuration file.
 `"genotype_call_rate_threshold": ` Removes sites with a user specified call rate. For example, if you want to remove sites with any missing data (call rate of 100%) set `"genotype_call_rate_threshold": ` to `"1.0"`. If you don't want to implements a call rate threshold, set `"genotype_call_rate_threshold": ` to `"0"`. 
 
 ### Additional information to provide if analyzing the autosomes
-`"vcf_ref_panel_path": ` Add the full path to the zipped reference panel VCF files that are separated by chromosome. Make sure the path has "/" at the end.
+`"vcf_ref_panel_path": ` Add the full path to the reference panel VCF files that are separated by chromosome. Make sure the path has "/" at the end.
 
 `"vcf_ref_panel_prefix": ` Add the part of the name of the reference VCF files that comes before the chr number. For example, if the reference VCF file for chromosome 1 is named `chr1_reference_panel.vcf.gz` then you would add `"chr"` to this part of the config file. 
 
 `"vcf_ref_panel_suffix": ` Add the part of the name of the reference VCF files that comes after the chromosome number. For example, if the reference VCF file for chromosome 1 is named `chr1_reference_panel.vcf.gz` then you would add `"_reference_panel.vcf.gz"` to this the config file.
 
-`"vcf_unknown_set_path": ` Add the full path to the zipped unknown sample(s) VCF files that are separated by chromosome. Make sure the path has "/" at the end.
+`"vcf_unknown_set_path": ` Add the full path to the unzipped unknown sample(s) VCF files that are separated by chromosome. Make sure the path has "/" at the end.
 
-`"vcf_unknown_set_prefix": ` Add the part of the name of the unknown VCF files that comes before the chromosome number. For example, if the unknown VCF file for chromosome 1 is named `chr1_unknown_panel.vcf.gz` then you would add `"chr"` to this part of the config file. 
+`"vcf_unknown_set_prefix": ` Add the part of the name of the unknown VCF files that comes before the chromosome number. For example, if the unknown VCF file for chromosome 1 is named `chr1_unknown_panel.vcf` then you would add `"chr"` to this part of the config file. 
 
-`"vcf_unknown_set_suffix": ` Add the part of the name of the unknown VCF files that comes after the chr number. For example, if the unknown VCF file for chromosome 1 is named `chr1_unknown_panel.vcf.gz` then you would add `"_unknown_panel.vcf.gz"` to the config file.
+`"vcf_unknown_set_suffix": ` Add the part of the name of the unknown VCF files that comes after the chr number. For example, if the unknown VCF file for chromosome 1 is named `chr1_unknown_panel.vcf` then you would add `"_unknown_panel.vcf.gz"` to the config file.
 
 `"chromosome": ` You may leave it as is, unless you do not want to analyze chromosomes 1-22. PopInf has an option to analyze the X chromosome (separately from the autosomes) so the X chromosome is not added here. If you are interested in analyzing the X chromosome, see below.
 
 ### Additional information to provide if analyzing the X chromosome
-`"vcf_ref_panel_path_X": ` Add the full path to the zipped reference panel VCF file for the X chromosome. Make sure the path has "/" at the end.
+`"vcf_ref_panel_path_X": ` Add the full path to the reference panel VCF file for the X chromosome. Make sure the path has "/" at the end.
 
-`"vcf_ref_panel_file": ` Add the full name of the zipped reference panel VCF file for the X chromosome.
+`"vcf_ref_panel_file": ` Add the full name of the reference panel VCF file for the X chromosome.
 
-`"vcf_unknown_set_path_X": ` Add the full path to the zipped unknown sample(s) VCF file for the X chromosome. Make sure the path has "/" at the.
+`"vcf_unknown_set_path_X": ` Add the full path to the unzipped unknown sample(s) VCF file for the X chromosome. Make sure the path has "/" at the.
 
-`"vcf_unknown_set_file": ` Add the full name of the zipped unknown sample(s) VCF file for the X chromosome. 
+`"vcf_unknown_set_file": ` Add the full name of the unzipped unknown sample(s) VCF file for the X chromosome. 
 
 `"X_chr_coordinates": ` Add the full path to and name of the file containing the X chromosome PAR and XTR coordinates. The coordinates are provided in the file named `X_chromosome_regions_XTR_hg19.bed` and this file is located in this folder.
 
