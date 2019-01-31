@@ -74,11 +74,17 @@ echo "Snakemake has finished running, if analyzing autosomes, merged analysis wi
 if [[ $1 = "A" ]]; then
 	echo "The autosomes will be analyzed."
 	echo ""
-	echo "The individual chromosome files are now being merged."
+	echo "The merge list is being created."
 	echo ""
 	# Create the merge list
 	python make_merge_list.py --path autosomes/merge/ --stem _reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune --out merge_list
 
+	echo ""
+	
+	echo "The individual chromosome files are now being merged."
+	echo ""
+	# Merge the plink files
+	plink --file autosomes/merge/chr1_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune --merge-list merge_list.txt --recode --out autosomes/merge/merge_all_chr_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune
 	echo ""
 	
 	# Edit the 6th column of the ped files
