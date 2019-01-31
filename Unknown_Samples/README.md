@@ -7,21 +7,14 @@ You will need the following to prepare the unknown panel:
 2. VCF files for the unknown panel.
 3. Unknown individuals sample information to compile a sample list.
 
-## Step 1: Zip your VCF files.
-If you need to zip your VCF files, use the following commands:
-```
-bgzip -c file.vcf > file.vcf.gz
-tabix -p vcf file.vcf.gz
-```
-
-## Step 2: Separate your VCF files by chromosome
+## Step 1: Separate your VCF files by chromosome
 If your VCF files for the unknown panel are not already separated by chromosome, you can use the following commands to separate them. PopInf will only accept VCF files separated by chromosome.
 
 ```
 vcftools --gzvcf /path/to/unknown_panel_VCF.vcf.gz --chr [chromosome_number] --recode --out /path/to/unknown_panel_VCF_chr[chromosome_number]
 ```
 
-## Step 3: Prepare the sample information text file
+## Step 2: Prepare the sample information text file
 To successfully run PopInf, you must have a text file containing the sample information for the unknown panel. The first column must specify the sample names. The second column must specify the biological sex of each sample. Finally, the third column must specify the population. Since this is the unknown panel, "UNK" will be acceptable in this column.
 
 Once these steps are complete, the unknown panel files are prepped and ready to be used in PopInf.
