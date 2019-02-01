@@ -203,10 +203,10 @@ else:
 			"chrX/merge/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune.ped",
 			"chrX/merge/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_editColumn6.ped",
 			"chrX/pca/par/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_par_PCA.par",
-			"chrX/pca/par/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune.evec",
-			"chrX/pca/par/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune.eval",
-			"chrX/pca/par/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_Fix.evec",
-			"chrX/pca/par/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_Fix2.evec",
+			"chrX/pca/out/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune.evec",
+			"chrX/pca/out/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune.eval",
+			"chrX/pca/out/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_Fix.evec",
+			"chrX/pca/out/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_Fix2.evec",
 			"chrX/chrX_inferred_pop_plot.pdf",
 			"chrX/chrX_inferred_pop_report.txt"
 
@@ -297,15 +297,15 @@ else:
 		output:
 			"chrX/pca/par/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_par_PCA.par"
 		shell:
-			"python make_par.py --map {input.ref_unk_map} --ped {input.ref_unk_ped_edit} --ev chrX/pca/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune --par chrX/pca/par/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_par"
+			"python make_par.py --map {input.ref_unk_map} --ped {input.ref_unk_ped_edit} --ev chrX/pca/out/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune --par chrX/pca/par/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_par"
 
 	# run PCA
 	rule run_pca:
 		input:
 			par = "chrX/pca/par/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_par_PCA.par"
 		output:
-			evec = "chrX/pca/par/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune.evec",
-			eval_file = "chrX/pca/par/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune.eval",
+			evec = "chrX/pca/out/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune.evec",
+			eval_file = "chrX/pca/out/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune.eval",
 		shell:"""
 		smartpca -p {input.par}
 		"""
@@ -313,23 +313,23 @@ else:
 	# Edit the evec files
 	rule edit_evec_1:
 		input:
-			"chrX/pca/par/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune.evec"
+			"chrX/pca/out/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune.evec"
 		output:
-			"chrX/pca/par/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_Fix.evec"
+			"chrX/pca/out/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_Fix.evec"
 		shell:"""awk '{{if($1 == "\\t" ) {{print $2,"\\t",$3,"\\t",$4,"\\t",$5,"\\t",$6,"\\t",$7,"\\t",$8,"\\t",$9,"\\t",$10,"\\t",$11,"\\t",$12,"\\t",$13,"\\t"}} else {{print $1,"\\t",$2,"\\t",$3,"\\t",$4,"\\t",$5,"\\t",$6,"\\t",$7,"\\t",$8,"\\t",$9,"\\t",$10,"\\t",$11,"\\t",$12,"\\t"}}}}' {input} > {output}"""
 
 	rule edit_evec_2:
 		input:
-			"chrX/pca/par/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_Fix.evec"
+			"chrX/pca/out/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_Fix.evec"
 		output:
-			"chrX/pca/par/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_Fix2.evec"
+			"chrX/pca/out/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_Fix2.evec"
 		shell:"""awk '{{gsub(/\.variant2/,""); gsub(/\.variant/,""); print}}' {input} > {output}"""
 
 	# Plot results and get inferred population report
 	rule results:
 		input:
-			evec = "chrX/pca/par/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_Fix2.evec",
-			eval_file = "chrX/pca/par/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune.eval",
+			evec = "chrX/pca/out/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune_Fix2.evec",
+			eval_file = "chrX/pca/out/chrX_reference_panel_unknown_set_SNPs_merge_noPARS_noXTR_noMissing_plink_LDprune.eval",
 			ref_panel = config["ref_panel_pop_info_path"],
 			unk = config["unkn_panel_pop_info_path"]
 		output:
