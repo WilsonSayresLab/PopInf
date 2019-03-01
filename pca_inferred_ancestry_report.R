@@ -54,10 +54,10 @@ pdf(pfdfilename, 8,8) #save as pdf, with size 8x8
 
 
 # THIS IS FOR TESTING PURPOSES ONLY AND SHOULD BE DELETED WHEN NO LONGER NEEDED!!!
-#evec_file <- read.table("chr21_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune_Fix2.evec", header = FALSE)
-#eval_file <- read.table("chr21_reference_panel_unknown_set_SNPs_merge_no_missing_plink_LDprune.eval", header = FALSE)
-#known_population_file <- read.table("ThousandGenomesSamples_AdmxRm_SHORT.txt", header = FALSE, sep = "\t")
-#unkownpop_file <- read.table("LIHC_primary_data_exome_VCF_samples_short.txt", header = FALSE, sep = "\t")
+#evec_file <- read.table("merge_all_chr_reference_panel_unknown_set_SNPs_no_missing_plink_LDprune_Fix2.evec", header = FALSE)
+#eval_file <- read.table("merge_all_chr_reference_panel_unknown_set_SNPs_no_missing_plink_LDprune.eval", header = FALSE)
+#known_population_file <- read.table("ThousandGenomesSamples_AdmxRm.txt", header = FALSE, sep = "\t")
+#unkownpop_file <- read.table("GTExSamples.txt", header = FALSE, sep = "\t")
 
 
 ### READ IN DATA ###
@@ -192,6 +192,8 @@ for (i in 1:length(test_vector)) {
 }
 
 ### Generate inferred population report ###
+# Below makes the empty data frame with the correct number of rows and columns 
+# with informative information.
 row_num <- length(UnkownPop_data_WithInfo[,1])
 col_num <- length(test_vector) + 5
 df <- data.frame(matrix(ncol = col_num, nrow = row_num))
@@ -207,6 +209,15 @@ for (i in 1:length(test_vector)) {
 colnames(df) <- vector_col_names
 
 
+# This is looping through each individual in UnkownPop_data_WithInfo (so each 
+# unknown sample) and see if they are within 3 standard deviations to a known
+# population. If not, the program will see how close that individual is to
+# a mid point between 2 populations and if that is closer than any population's 
+# 3rd standard deviations, it will be called as the two populations of that 
+# midpoint. If not, then that individual will be called to the population's 3rd
+# SD it is closest to.
+
+# Begin with a 0 iterator so that we can loop through all individuals
 iterator <- 0
 for (i in UnkownPop_data_WithInfo[,1]) {
 
@@ -270,9 +281,9 @@ for (i in UnkownPop_data_WithInfo[,1]) {
   }
 
   vector_to_add_df <- c(vector_to_add_df, inferred_pop_1SD, inferred_pop_2SD, inferred_pop_3SD)
-# I think below is what needs to be changed. Instead of getting less inferred ancestry from testing the centroid distance
-# and the centroid of all clusters, if the individual does not fall within 3SD of any cluster, the script will compare the distance from
-# 3SD of all clusters with distance from midpoints of all pairwise clusters. 
+# If the individual does not fall within 3SD of any cluster, the script will 
+# compare the distance from 3SD of all clusters with distance from midpoints 
+# of all pairwise clusters. 
   less_rest_inf_pop <- c()
   cat_points <- rbind(mat_meanx_meany_rad, mat_meanx_meany_compares)
   n_all <- length(cat_points[,1])
@@ -295,7 +306,8 @@ for (i in UnkownPop_data_WithInfo[,1]) {
         #less_rest_inf_pop <- com_all_pnts[index_num]
       }
       # then here put finding the lowest value and getting the less_rest_inf_pop from com_all_pnts[index_num]. Below may have to change
-      com_all_pnts[test_all_pts,] <- c(cat_points[test_all_pts,1],dist_i_to_pnt)
+      #com_all_pnts[test_all_pts,] <- c(cat_points[test_all_pts,1],dist_i_to_pnt)
+      com_all_pnts[test_all_pts,] <- c(cat_points[test_all_pts,1],format(as.numeric(dist_i_to_pnt), scientific=F))
       index_num <- which(com_all_pnts == min(com_all_pnts)) - n_all
       less_rest_inf_pop <- com_all_pnts[index_num]
     }
@@ -311,23 +323,6 @@ for (i in UnkownPop_data_WithInfo[,1]) {
     }}  
 
   vector_to_add_df <- c(vector_to_add_df, less_rest_inf_pop)
-
-#  less_rest_inf_pop <- c()
-#  cat_points <- rbind(mat_meanx_meany_rad, mat_meanx_meany_compares)
-#  n_all <- length(cat_points[,1])
-#  com_all_pnts <- matrix(ncol=2, nrow=n_all)
-#  if (inferred_pop_3SD == "-"){
-#    for (test_all_pts in 1:length(cat_points[,1])) {
-#      x <- as.numeric(cat_points[test_all_pts,2])
-#      y <- as.numeric(cat_points[test_all_pts,3])
-#      dist_i_to_pnt <- sqrt( ((x - pc_x)^2) + ((y - pc_y)^2) )
-#      com_all_pnts[test_all_pts,] <- c(cat_points[test_all_pts,1],dist_i_to_pnt)
-#      index_num <- which(com_all_pnts == min(com_all_pnts)) - n_all
-#      less_rest_inf_pop <- com_all_pnts[index_num]
-#    }
-#  } else {less_rest_inf_pop <- inferred_pop_3SD}
-#
-#vector_to_add_df <- c(vector_to_add_df, less_rest_inf_pop)
 
   
   for (cluster in 1:length(mat_meanx_meany_rad[,1])) {
